@@ -10,7 +10,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(express.static(__dirname + '/../public/'))
+//app.get('/', (req, res) => res.send('express server running'));
 
-//app.get('/', (req, res) => res.send('Dude, I\'m your express server'));
+// route or routes for querying json-server
+app.post('/'/*add route */, function (req, res) {
+  //res.send('GET request to the homepage');
+})
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
