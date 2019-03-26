@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  entry: './client/app.jsx',
   module: {
     rules: [
       {
@@ -29,7 +30,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Challenge 1',
       filename: './index.html',
-      template: './src/index.html'
+      template: './client/index.html'
     })
   ],
   devtool: 'source-map-loader'
