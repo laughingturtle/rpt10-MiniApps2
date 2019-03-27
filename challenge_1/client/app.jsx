@@ -7,33 +7,39 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      term: term
+      results: []
     }
+    this.searchRecords = this.searchRecords.bind(this);
   }
 
   componentDidMount(){
 
   }
 
-  search(){
-    axios.post('/yourRouteHere', {
-      term: this.state.term,
-    })
+  searchRecords(term){
+    console.log('this', this);
+    let that = this;
+    console.log('term in parent search func: ', term)
+      axios.get('http://localhost:3010/events', {
+        params: {
+          q: term
+        }
+      })
     .then(function (response) {
-      console.log(response);
+      console.log('this again:', that)
+      console.log('response: ', response.data);
+      that.setState({
+        results: response.data
+     });
     })
     .catch(function (error) {
-      console.log(error);
+      console.log('Error on client', error);
     });
-  }
-
-  handleSearch(){
-
   }
 
   render (){
     return (
-      <div><Search />
+      <div><Search searchRecords={this.searchRecords}/>
         <h1>This is your react app, waz up dawg?</h1>
       </div>
     )
