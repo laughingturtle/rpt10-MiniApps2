@@ -8,7 +8,8 @@ class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      results: []
+      results: [],
+      offset: 0
     }
     this.searchRecords = this.searchRecords.bind(this);
   }
@@ -26,8 +27,10 @@ class App extends React.Component{
         }
       })
     .then(function (response) {
+      let data = response.data;
       that.setState({
-        results: response.data
+        results: response.data,
+        pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
      });
     })
     .catch(function (error) {
@@ -35,12 +38,24 @@ class App extends React.Component{
     });
   }
 
+  handlePageClick = data => {
+    let selected = data.selected;
+    let offset = Math.ceil(selected * this.props.perPage);
+
+    this.setState({
+      offset: offset
+    },
+    () => {
+      this.searchRecords();
+    });
+  };
+
   render (){
     return (
       <div>
-        <h1>Peruse some lovely historical data</h1>
+        <h1>Historical Data Search App</h1>
         <Search searchRecords={this.searchRecords}/>
-        <Page data={this.state.results}/>
+        <Page data={this.state.results} offset={this.state.offset} pageCount={this.state.pageCount}/>
       </div>
     )
   }

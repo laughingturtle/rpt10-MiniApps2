@@ -121,6 +121,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -138,8 +140,21 @@ function (_React$Component) {
     _classCallCheck(this, App);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_this), "handlePageClick", function (data) {
+      var selected = data.selected;
+      var offset = Math.ceil(selected * _this.props.perPage);
+
+      _this.setState({
+        offset: offset
+      }, function () {
+        _this.searchRecords();
+      });
+    });
+
     _this.state = {
-      results: []
+      results: [],
+      offset: 0
     };
     _this.searchRecords = _this.searchRecords.bind(_assertThisInitialized(_this));
     return _this;
@@ -158,8 +173,10 @@ function (_React$Component) {
           q: term
         }
       }).then(function (response) {
+        var data = response.data;
         that.setState({
-          results: response.data
+          results: response.data,
+          pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
         });
       }).catch(function (error) {
         console.log('Error on client', error);
@@ -168,10 +185,12 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Peruse some lovely historical data"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_search_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Historical Data Search App"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_search_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         searchRecords: this.searchRecords
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_page_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        data: this.state.results
+        data: this.state.results,
+        offset: this.state.offset,
+        pageCount: this.state.pageCount
       }));
     }
   }]);
@@ -187,11 +206,12 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 /*!************************************!*\
   !*** ./client/components/page.jsx ***!
   \************************************/
-/*! exports provided: default */
+/*! exports provided: Page, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Page", function() { return Page; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
@@ -216,14 +236,49 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
+
+
+var EventsList =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(EventsList, _React$Component);
+
+  function EventsList() {
+    _classCallCheck(this, EventsList);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(EventsList).apply(this, arguments));
+  }
+
+  _createClass(EventsList, [{
+    key: "render",
+    value: function render() {
+      var eventNodes = this.props.data.map(function (event, index) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: index
+        }, event.event);
+      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "project-events",
+        className: "eventList"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, eventNodes));
+    }
+  }]);
+
+  return EventsList;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+_defineProperty(EventsList, "propTypes", {
+  data: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array.isRequired
+});
 
 var Page =
 /*#__PURE__*/
-function (_React$Component) {
-  _inherits(Page, _React$Component);
+function (_React$Component2) {
+  _inherits(Page, _React$Component2);
 
   function Page(props) {
     var _this;
@@ -231,9 +286,7 @@ function (_React$Component) {
     _classCallCheck(this, Page);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Page).call(this, props));
-    _this.state = {
-      value: ''
-    };
+    _this.state = {};
     return _this;
   }
 
@@ -241,12 +294,34 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       console.log('props in page: ', this.props);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "commentBox"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EventsList, {
+        data: this.props.data
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_paginate__WEBPACK_IMPORTED_MODULE_2___default.a, {
+        previousLabel: 'previous',
+        nextLabel: 'next',
+        breakLabel: '...',
+        breakClassName: 'break-me',
+        pageCount: this.props.pageCount,
+        marginPagesDisplayed: 2,
+        pageRangeDisplayed: 5,
+        onPageChange: this.handlePageClick,
+        containerClassName: 'pagination',
+        subContainerClassName: 'pages pagination',
+        activeClassName: 'active'
+      })));
     }
   }]);
 
   return Page;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+_defineProperty(Page, "propTypes", {
+  date: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  description: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  perPage: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired
+});
 
 /* harmony default export */ __webpack_exports__["default"] = (Page);
 
