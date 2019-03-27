@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Search from './components/search.jsx';
+import Page from './components/page.jsx';
 import axios from 'axios';
 
 class App extends React.Component{
@@ -17,17 +18,14 @@ class App extends React.Component{
   }
 
   searchRecords(term){
-    console.log('this', this);
     let that = this;
-    console.log('term in parent search func: ', term)
+    //console.log('term in parent search func: ', term)
       axios.get('http://localhost:3010/events', {
         params: {
           q: term
         }
       })
     .then(function (response) {
-      console.log('this again:', that)
-      console.log('response: ', response.data);
       that.setState({
         results: response.data
      });
@@ -39,8 +37,10 @@ class App extends React.Component{
 
   render (){
     return (
-      <div><Search searchRecords={this.searchRecords}/>
-        <h1>This is your react app, waz up dawg?</h1>
+      <div>
+        <h1>Peruse some lovely historical data</h1>
+        <Search searchRecords={this.searchRecords}/>
+        <Page data={this.state.results}/>
       </div>
     )
   }
