@@ -101,8 +101,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_search_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/search.jsx */ "./client/components/search.jsx");
 /* harmony import */ var _components_page_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/page.jsx */ "./client/components/page.jsx");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_paginate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-paginate */ "./node_modules/react-paginate/dist/index.js");
+/* harmony import */ var react_paginate__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_paginate__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -129,6 +133,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 var App =
 /*#__PURE__*/
 function (_React$Component) {
@@ -142,19 +148,30 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "handlePageClick", function (data) {
+      console.log('******* handlePageClick-Clicked ******');
       var selected = data.selected;
-      var offset = Math.ceil(selected * _this.props.perPage);
+      var offset = Math.ceil(selected * _this.state.perPage);
+      console.log('offset', offset);
 
       _this.setState({
         offset: offset
       }, function () {
+        console.log('offset 2', _this.state.offset);
+
         _this.searchRecords();
       });
     });
 
     _this.state = {
       results: [],
-      offset: 0
+      url: 'http://localhost:3000/historicaldata',
+      offset: 0,
+      perPage: 10,
+      pageCount: 0,
+      limit: 10,
+      total_count: 0,
+      next: '',
+      previous: ''
     };
     _this.searchRecords = _this.searchRecords.bind(_assertThisInitialized(_this));
     _this.handlePageClick = _this.handlePageClick.bind(_assertThisInitialized(_this));
@@ -167,18 +184,28 @@ function (_React$Component) {
   }, {
     key: "searchRecords",
     value: function searchRecords(term) {
-      var that = this; //console.log('term in parent search func: ', term)
-
-      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('http://localhost:3010/events', {
+      var that = this;
+      axios__WEBPACK_IMPORTED_MODULE_6___default.a.get(that.state.url, {
         params: {
-          q: term
+          q: term,
+          data: {
+            limit: that.state.perPage,
+            offset: that.state.offset
+          }
         }
       }).then(function (response) {
-        var data = response.data;
-        that.setState({
-          results: response.data // pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
+        var data = response.data; //console.log('just data: ', data);
+        // console.log('data + total count', data.meta.total_count);
+        // console.log('data + limit', data.meta.limit);
 
-        });
+        that.setState({
+          results: data.comments,
+          next: data.meta.next,
+          previous: data.meta.previous,
+          pageCount: parseInt(Math.ceil(data.meta.total_count / data.meta.limit))
+        }); // console.log('results', results);
+
+        console.log('pageCount', that.state.pageCount);
       }).catch(function (error) {
         console.log('Error on client', error);
       });
@@ -192,6 +219,7 @@ function (_React$Component) {
         data: this.state.results,
         handlePageClick: this.handlePageClick,
         offset: this.state.offset,
+        perPage: this.state.perPage,
         pageCount: this.state.pageCount
       }));
     }
@@ -199,6 +227,11 @@ function (_React$Component) {
 
   return App;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+_defineProperty(App, "propTypes", {
+  url: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  perPage: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.number.isRequired
+});
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('app'));
 
@@ -258,10 +291,12 @@ function (_React$Component) {
   _createClass(EventsList, [{
     key: "render",
     value: function render() {
+      console.log('props in Events List', this.props.data);
       var eventNodes = this.props.data.map(function (event, index) {
+        console.log('event', event.description);
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: index
-        }, event.event);
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, event.date, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), event.description));
       });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "project-events",
@@ -296,7 +331,23 @@ function (_React$Component2) {
     key: "render",
     value: function render() {
       console.log('props in page: ', this.props);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "commentBox"
+      }, console.log('props in Page class: ', this.props.data), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EventsList, {
+        data: this.props.data
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_paginate__WEBPACK_IMPORTED_MODULE_2___default.a, {
+        previousLabel: 'previous',
+        nextLabel: 'next',
+        breakLabel: '...',
+        breakClassName: 'break-me',
+        pageCount: this.props.pageCount,
+        marginPagesDisplayed: 2,
+        pageRangeDisplayed: 5,
+        onPageChange: this.props.handlePageClick,
+        containerClassName: 'pagination',
+        subContainerClassName: 'pages pagination',
+        activeClassName: 'active'
+      })));
     }
   }]);
 
@@ -304,7 +355,6 @@ function (_React$Component2) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 _defineProperty(Page, "propTypes", {
-  date: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
   description: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
   perPage: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired
 });

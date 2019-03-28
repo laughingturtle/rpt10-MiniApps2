@@ -7,9 +7,14 @@ class EventsList extends React.Component {
     data: PropTypes.array.isRequired,
   }
 
+
   render() {
+    console.log('props in Events List', this.props.data)
     let eventNodes = this.props.data.map(function(event, index) {
-      return <div key={index}>{event.event}</div>;
+      console.log('event', event.description);
+      return <div key={index}>
+        <p>{event.date}<br />{event.description}</p>
+      </div>;
     });
 
     return (
@@ -22,7 +27,6 @@ class EventsList extends React.Component {
 
 export class Page extends React.Component{
   static propTypes = {
-    date: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     perPage: PropTypes.number.isRequired,
   };
@@ -38,7 +42,8 @@ export class Page extends React.Component{
     return (
       <div>
         <h3>Search Results:</h3>
-        {/* <div className="commentBox">
+        <div className="commentBox">
+          {console.log('props in Page class: ', this.props.data)}
           <EventsList data={this.props.data} />
           <ReactPaginate
             previousLabel={'previous'}
@@ -53,7 +58,7 @@ export class Page extends React.Component{
             subContainerClassName={'pages pagination'}
             activeClassName={'active'}
           />
-        </div> */}
+        </div>
       </div>
     )
   }

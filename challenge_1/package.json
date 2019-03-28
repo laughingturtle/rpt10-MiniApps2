@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/index.js",
+    "json": "nodemon jsonserver/index.js",
     "build": "webpack --mode=development --watch"
   },
   "author": "",
@@ -21,7 +22,8 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
-    "react-paginate": "^6.3.0"
+    "react-paginate": "^6.3.0",
+    "serve-static": "^1.13.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
