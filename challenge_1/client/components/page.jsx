@@ -38,7 +38,7 @@ export class Page extends React.Component{
     return (
       <div>
         <h3>Search Results:</h3>
-        <div className="commentBox">
+        {/* <div className="commentBox">
           <EventsList data={this.props.data} />
           <ReactPaginate
             previousLabel={'previous'}
@@ -48,12 +48,12 @@ export class Page extends React.Component{
             pageCount={this.props.pageCount}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
-            onPageChange={this.handlePageClick}
+            onPageChange={this.props.handlePageClick}
             containerClassName={'pagination'}
             subContainerClassName={'pages pagination'}
             activeClassName={'active'}
           />
-        </div>
+        </div> */}
       </div>
     )
   }

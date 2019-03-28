@@ -12,6 +12,7 @@ class App extends React.Component{
       offset: 0
     }
     this.searchRecords = this.searchRecords.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentDidMount(){
@@ -30,7 +31,7 @@ class App extends React.Component{
       let data = response.data;
       that.setState({
         results: response.data,
-        pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
+       // pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
      });
     })
     .catch(function (error) {
@@ -55,7 +56,7 @@ class App extends React.Component{
       <div>
         <h1>Historical Data Search App</h1>
         <Search searchRecords={this.searchRecords}/>
-        <Page data={this.state.results} offset={this.state.offset} pageCount={this.state.pageCount}/>
+        <Page data={this.state.results} handlePageClick={this.handlePageClick} offset={this.state.offset} pageCount={this.state.pageCount}/>
       </div>
     )
   }

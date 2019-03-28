@@ -157,6 +157,7 @@ function (_React$Component) {
       offset: 0
     };
     _this.searchRecords = _this.searchRecords.bind(_assertThisInitialized(_this));
+    _this.handlePageClick = _this.handlePageClick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -175,8 +176,8 @@ function (_React$Component) {
       }).then(function (response) {
         var data = response.data;
         that.setState({
-          results: response.data,
-          pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
+          results: response.data // pageCount: Math.ceil(data.meta.total_count / data.meta.limit)
+
         });
       }).catch(function (error) {
         console.log('Error on client', error);
@@ -189,6 +190,7 @@ function (_React$Component) {
         searchRecords: this.searchRecords
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_page_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         data: this.state.results,
+        handlePageClick: this.handlePageClick,
         offset: this.state.offset,
         pageCount: this.state.pageCount
       }));
@@ -294,23 +296,7 @@ function (_React$Component2) {
     key: "render",
     value: function render() {
       console.log('props in page: ', this.props);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "commentBox"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EventsList, {
-        data: this.props.data
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_paginate__WEBPACK_IMPORTED_MODULE_2___default.a, {
-        previousLabel: 'previous',
-        nextLabel: 'next',
-        breakLabel: '...',
-        breakClassName: 'break-me',
-        pageCount: this.props.pageCount,
-        marginPagesDisplayed: 2,
-        pageRangeDisplayed: 5,
-        onPageChange: this.handlePageClick,
-        containerClassName: 'pagination',
-        subContainerClassName: 'pages pagination',
-        activeClassName: 'active'
-      })));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"));
     }
   }]);
 
