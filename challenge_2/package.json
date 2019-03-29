@@ -13,11 +13,13 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "chart.js": "^2.8.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "nodemon": "^1.18.10",
     "react": "^16.8.5",
-    "react-dom": "^16.8.5"
+    "react-dom": "^16.8.5",
+    "styled-components": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
