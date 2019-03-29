@@ -17,7 +17,6 @@ class Search extends React.Component{
   }
 
   handleSubmit(){
-    //console.log('in child:', this.state.value);
     this.props.searchRecords(this.state.value);
   }
 

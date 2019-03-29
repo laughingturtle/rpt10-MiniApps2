@@ -148,16 +148,14 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "handlePageClick", function (data) {
-      console.log('******* handlePageClick-Clicked ******');
+      //  console.log('******* handlePageClick-Clicked ******')
       var selected = data.selected;
-      var offset = Math.ceil(selected * _this.state.perPage);
-      console.log('offset before set state', offset);
+      var offset = Math.ceil(selected * _this.state.perPage); //  console.log('offset before set state', offset)
 
       _this.setState({
         offset: offset
       }, function () {
-        console.log('offset after set state: ', _this.state.offset);
-
+        //  console.log('offset after set state: ', this.state.offset)
         _this.searchRecords();
       });
     });
@@ -185,17 +183,16 @@ function (_React$Component) {
   }, {
     key: "searchRecords",
     value: function searchRecords(term) {
-      var that = this;
-      console.log('set state term before set state', this.state.term);
-      console.log('term before set state', term);
+      var that = this; // console.log('set state term before set state', this.state.term);
+      // console.log('term before set state', term);
 
       if (term) {
         this.setState({
           term: term
         });
-      }
+      } // console.log('this', this);
 
-      console.log('this', this);
+
       axios__WEBPACK_IMPORTED_MODULE_6___default.a.get(that.state.url, {
         params: {
           q: term || this.state.term,
@@ -208,18 +205,16 @@ function (_React$Component) {
         var data = response.data; //console.log('just data: ', data);
         // console.log('data + total count', data.meta.total_count);
         // console.log('data + limit', data.meta.limit);
+        // console.log('term after set state: ', term);
 
-        console.log('term after set state: ', term);
         that.setState({
           results: data.comments,
           next: data.meta.next,
           previous: data.meta.previous,
           pageCount: parseInt(Math.ceil(data.meta.total_count / data.meta.limit))
         }); // console.log('results', results);
-
-        console.log('pageCount', that.state.pageCount);
-      }).catch(function (error) {
-        console.log('Error on client', error);
+        // console.log('pageCount', that.state.pageCount);
+      }).catch(function (error) {// console.log('Error on client', error);
       });
     }
   }, {
@@ -254,18 +249,18 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 /*!************************************!*\
   !*** ./client/components/page.jsx ***!
   \************************************/
-/*! exports provided: Page, default */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Page", function() { return Page; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_paginate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-paginate */ "./node_modules/react-paginate/dist/index.js");
 /* harmony import */ var react_paginate__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_paginate__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_formatdate_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/formatdate.js */ "./client/components/utils/formatdate.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -276,9 +271,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -290,41 +285,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var EventsList =
 /*#__PURE__*/
 function (_React$Component) {
   _inherits(EventsList, _React$Component);
 
   function EventsList() {
-    var _this;
-
     _classCallCheck(this, EventsList);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(EventsList).call(this));
-    _this.renderDate = _this.renderDate.bind(_assertThisInitialized(_this));
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(EventsList).call(this));
   }
 
   _createClass(EventsList, [{
-    key: "renderDate",
-    value: function renderDate(d) {
-      if (d.charAt(0) === '-') {
-        return d.substring(1) + ' BC';
-      } else {
-        return d;
-      }
-    }
-  }, {
     key: "render",
     value: function render() {
-      var that = this;
-      console.log('page this: ', this);
-      console.log('props in Events List', this.props.data);
+      var that = this; // console.log('page this: ', this);
+      // console.log('props in Events List', this.props.data)
+
       var eventNodes = this.props.data.map(function (event, index) {
-        console.log('event', event.description);
+        // console.log('event', event.description);
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: index
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, that.renderDate(event.date), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), event.description));
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, Object(_utils_formatdate_js__WEBPACK_IMPORTED_MODULE_3__["default"])(event.date), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), event.description));
       });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "project-events",
@@ -346,22 +329,22 @@ function (_React$Component2) {
   _inherits(Page, _React$Component2);
 
   function Page(props) {
-    var _this2;
+    var _this;
 
     _classCallCheck(this, Page);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Page).call(this, props));
-    _this2.state = {};
-    return _this2;
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Page).call(this, props));
+    _this.state = {};
+    return _this;
   }
 
   _createClass(Page, [{
     key: "render",
     value: function render() {
-      console.log('props in page: ', this.props);
+      // console.log('props in page: ', this.props)
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results for: ", this.props.term), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "commentBox"
-      }, console.log('props in Page class: ', this.props.data), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EventsList, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EventsList, {
         data: this.props.data
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_paginate__WEBPACK_IMPORTED_MODULE_2___default.a, {
         previousLabel: 'previous',
@@ -451,7 +434,6 @@ function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit() {
-      //console.log('in child:', this.state.value);
       this.props.searchRecords(this.state.value);
     }
   }, {
@@ -471,6 +453,26 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (Search);
+
+/***/ }),
+
+/***/ "./client/components/utils/formatdate.js":
+/*!***********************************************!*\
+  !*** ./client/components/utils/formatdate.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return renderDate; });
+function renderDate(d) {
+  if (d.charAt(0) === '-') {
+    return d.substring(1) + ' BC';
+  } else {
+    return d;
+  }
+}
 
 /***/ }),
 

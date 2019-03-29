@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
+import dateFormat from './utils/formatdate.js';
 
 class EventsList extends React.Component {
   static propTypes = {
@@ -8,26 +9,16 @@ class EventsList extends React.Component {
   }
   constructor() {
     super();
-    this.renderDate = this.renderDate.bind(this);
   }
-
-  renderDate(d){
-    if (d.charAt(0) === '-'){
-      return d.substring(1) + ' BC';
-    } else {
-      return d;
-    }
-  }
-
 
   render() {
     let that = this;
-    console.log('page this: ', this);
-    console.log('props in Events List', this.props.data)
+    // console.log('page this: ', this);
+    // console.log('props in Events List', this.props.data)
     let eventNodes = this.props.data.map(function(event, index) {
-      console.log('event', event.description);
+     // console.log('event', event.description);
       return <div key={index}>
-        <p>{that.renderDate(event.date)}<br />{event.description}</p>
+        <p>{dateFormat(event.date)}<br />{event.description}</p>
       </div>;
     });
 
@@ -39,7 +30,7 @@ class EventsList extends React.Component {
   }
 }
 
-export class Page extends React.Component{
+class Page extends React.Component{
   static propTypes = {
     description: PropTypes.string.isRequired,
     perPage: PropTypes.number.isRequired,
@@ -52,12 +43,12 @@ export class Page extends React.Component{
   }
 
   render(){
-    console.log('props in page: ', this.props)
+   // console.log('props in page: ', this.props)
     return (
       <div>
         <h3>Search Results for: {this.props.term}</h3>
         <div className="commentBox">
-          {console.log('props in Page class: ', this.props.data)}
+          {/* {console.log('props in Page class: ', this.props.data)} */}
           <EventsList data={this.props.data} />
           <ReactPaginate
             previousLabel={'previous'}

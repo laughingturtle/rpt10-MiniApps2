@@ -35,14 +35,14 @@ class App extends React.Component{
 
   searchRecords(term){
     let that = this;
-    console.log('set state term before set state', this.state.term);
-    console.log('term before set state', term);
+    // console.log('set state term before set state', this.state.term);
+    // console.log('term before set state', term);
     if (term){
       this.setState({
         term: term
       })
     }
-    console.log('this', this);
+   // console.log('this', this);
     axios.get(that.state.url, {
       params: {
         q: term || this.state.term,
@@ -54,7 +54,7 @@ class App extends React.Component{
      //console.log('just data: ', data);
      // console.log('data + total count', data.meta.total_count);
      // console.log('data + limit', data.meta.limit);
-      console.log('term after set state: ', term);
+      // console.log('term after set state: ', term);
       that.setState({
       results: data.comments,
       next: data.meta.next,
@@ -62,24 +62,24 @@ class App extends React.Component{
       pageCount: parseInt(Math.ceil(data.meta.total_count / data.meta.limit))
       });
      // console.log('results', results);
-      console.log('pageCount', that.state.pageCount);
+     // console.log('pageCount', that.state.pageCount);
     })
     .catch(function (error) {
-      console.log('Error on client', error);
+     // console.log('Error on client', error);
     });
   }
 
   handlePageClick = data => {
-    console.log('******* handlePageClick-Clicked ******')
+  //  console.log('******* handlePageClick-Clicked ******')
     let selected = data.selected;
     let offset = Math.ceil(selected * this.state.perPage);
-    console.log('offset before set state', offset)
+  //  console.log('offset before set state', offset)
 
     this.setState({
       offset: offset
     },
     () => {
-      console.log('offset after set state: ', this.state.offset)
+    //  console.log('offset after set state: ', this.state.offset)
       this.searchRecords();
     });
   };
