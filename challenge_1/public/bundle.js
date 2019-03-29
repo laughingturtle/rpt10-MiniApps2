@@ -151,12 +151,12 @@ function (_React$Component) {
       console.log('******* handlePageClick-Clicked ******');
       var selected = data.selected;
       var offset = Math.ceil(selected * _this.state.perPage);
-      console.log('offset', offset);
+      console.log('offset before set state', offset);
 
       _this.setState({
         offset: offset
       }, function () {
-        console.log('offset 2', _this.state.offset);
+        console.log('offset after set state: ', _this.state.offset);
 
         _this.searchRecords();
       });
@@ -171,7 +171,8 @@ function (_React$Component) {
       limit: 10,
       total_count: 0,
       next: '',
-      previous: ''
+      previous: '',
+      term: ''
     };
     _this.searchRecords = _this.searchRecords.bind(_assertThisInitialized(_this));
     _this.handlePageClick = _this.handlePageClick.bind(_assertThisInitialized(_this));
@@ -185,9 +186,19 @@ function (_React$Component) {
     key: "searchRecords",
     value: function searchRecords(term) {
       var that = this;
+      console.log('set state term before set state', this.state.term);
+      console.log('term before set state', term);
+
+      if (term) {
+        this.setState({
+          term: term
+        });
+      }
+
+      console.log('this', this);
       axios__WEBPACK_IMPORTED_MODULE_6___default.a.get(that.state.url, {
         params: {
-          q: term,
+          q: term || this.state.term,
           data: {
             limit: that.state.perPage,
             offset: that.state.offset
@@ -198,6 +209,7 @@ function (_React$Component) {
         // console.log('data + total count', data.meta.total_count);
         // console.log('data + limit', data.meta.limit);
 
+        console.log('term after set state: ', term);
         that.setState({
           results: data.comments,
           next: data.meta.next,
@@ -217,6 +229,7 @@ function (_React$Component) {
         searchRecords: this.searchRecords
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_page_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         data: this.state.results,
+        term: this.state.term,
         handlePageClick: this.handlePageClick,
         offset: this.state.offset,
         perPage: this.state.perPage,
@@ -263,9 +276,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -283,20 +296,35 @@ function (_React$Component) {
   _inherits(EventsList, _React$Component);
 
   function EventsList() {
+    var _this;
+
     _classCallCheck(this, EventsList);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(EventsList).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(EventsList).call(this));
+    _this.renderDate = _this.renderDate.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(EventsList, [{
+    key: "renderDate",
+    value: function renderDate(d) {
+      if (d.charAt(0) === '-') {
+        return d.substring(1) + ' BC';
+      } else {
+        return d;
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
+      var that = this;
+      console.log('page this: ', this);
       console.log('props in Events List', this.props.data);
       var eventNodes = this.props.data.map(function (event, index) {
         console.log('event', event.description);
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: index
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, event.date, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), event.description));
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, that.renderDate(event.date), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), event.description));
       });
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "project-events",
@@ -318,20 +346,20 @@ function (_React$Component2) {
   _inherits(Page, _React$Component2);
 
   function Page(props) {
-    var _this;
+    var _this2;
 
     _classCallCheck(this, Page);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Page).call(this, props));
-    _this.state = {};
-    return _this;
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Page).call(this, props));
+    _this2.state = {};
+    return _this2;
   }
 
   _createClass(Page, [{
     key: "render",
     value: function render() {
       console.log('props in page: ', this.props);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Search Results for: ", this.props.term), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "commentBox"
       }, console.log('props in Page class: ', this.props.data), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(EventsList, {
         data: this.props.data
@@ -343,7 +371,7 @@ function (_React$Component2) {
         pageCount: this.props.pageCount,
         marginPagesDisplayed: 2,
         pageRangeDisplayed: 5,
-        onPageChange: this.props.handlePageClick,
+        onPageChange: this.props.handlePageClick.bind(this),
         containerClassName: 'pagination',
         subContainerClassName: 'pages pagination',
         activeClassName: 'active'

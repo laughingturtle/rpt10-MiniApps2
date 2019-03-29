@@ -22,7 +22,8 @@ class App extends React.Component{
       limit: 10,
       total_count: 0,
       next: '',
-      previous: ''
+      previous: '',
+      term: ''
     }
     this.searchRecords = this.searchRecords.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -34,9 +35,17 @@ class App extends React.Component{
 
   searchRecords(term){
     let that = this;
+    console.log('set state term before set state', this.state.term);
+    console.log('term before set state', term);
+    if (term){
+      this.setState({
+        term: term
+      })
+    }
+    console.log('this', this);
     axios.get(that.state.url, {
       params: {
-        q: term,
+        q: term || this.state.term,
         data: { limit: that.state.perPage, offset: that.state.offset }
       }
     })
@@ -45,6 +54,7 @@ class App extends React.Component{
      //console.log('just data: ', data);
      // console.log('data + total count', data.meta.total_count);
      // console.log('data + limit', data.meta.limit);
+      console.log('term after set state: ', term);
       that.setState({
       results: data.comments,
       next: data.meta.next,
@@ -63,13 +73,13 @@ class App extends React.Component{
     console.log('******* handlePageClick-Clicked ******')
     let selected = data.selected;
     let offset = Math.ceil(selected * this.state.perPage);
-    console.log('offset',offset)
+    console.log('offset before set state', offset)
 
     this.setState({
       offset: offset
     },
     () => {
-      console.log('offset 2', this.state.offset)
+      console.log('offset after set state: ', this.state.offset)
       this.searchRecords();
     });
   };
@@ -79,7 +89,7 @@ class App extends React.Component{
       <div>
         <h1>Historical Data Search App</h1>
         <Search searchRecords={this.searchRecords}/>
-        <Page data={this.state.results} handlePageClick={this.handlePageClick} offset={this.state.offset} perPage={this.state.perPage} pageCount={this.state.pageCount}/>
+        <Page data={this.state.results} term={this.state.term} handlePageClick={this.handlePageClick} offset={this.state.offset} perPage={this.state.perPage} pageCount={this.state.pageCount}/>
       </div>
     )
   }

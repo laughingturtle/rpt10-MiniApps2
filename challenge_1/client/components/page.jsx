@@ -6,14 +6,28 @@ class EventsList extends React.Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
   }
+  constructor() {
+    super();
+    this.renderDate = this.renderDate.bind(this);
+  }
+
+  renderDate(d){
+    if (d.charAt(0) === '-'){
+      return d.substring(1) + ' BC';
+    } else {
+      return d;
+    }
+  }
 
 
   render() {
+    let that = this;
+    console.log('page this: ', this);
     console.log('props in Events List', this.props.data)
     let eventNodes = this.props.data.map(function(event, index) {
       console.log('event', event.description);
       return <div key={index}>
-        <p>{event.date}<br />{event.description}</p>
+        <p>{that.renderDate(event.date)}<br />{event.description}</p>
       </div>;
     });
 
@@ -41,7 +55,7 @@ export class Page extends React.Component{
     console.log('props in page: ', this.props)
     return (
       <div>
-        <h3>Search Results:</h3>
+        <h3>Search Results for: {this.props.term}</h3>
         <div className="commentBox">
           {console.log('props in Page class: ', this.props.data)}
           <EventsList data={this.props.data} />
@@ -53,7 +67,7 @@ export class Page extends React.Component{
             pageCount={this.props.pageCount}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
-            onPageChange={this.props.handlePageClick}
+            onPageChange={this.props.handlePageClick.bind(this)}
             containerClassName={'pagination'}
             subContainerClassName={'pages pagination'}
             activeClassName={'active'}
