@@ -1,5 +1,6 @@
-import React from 'react';
-import reactDOM from 'react-dom';
+import React from 'react'
+import reactDOM from 'react-dom'
+import Keypad from './components/keypad.jsx'
 
 class App extends React.Component {
   constructor(props){
@@ -17,7 +18,8 @@ componentDidMount(){
 render(){
     return (
       <div>
-        Reacting
+         <h1>Bowl Me Over!</h1>
+        <Keypad />
       </div>
     )
   }
