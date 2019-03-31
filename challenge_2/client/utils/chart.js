@@ -75,7 +75,7 @@ var cfg = {
   }
 };
 
-export default chart = new Chart(ctx, cfg);
+chart = new Chart(ctx, cfg);
 
 document.getElementById('update').addEventListener('click', function() {
   var type = document.getElementById('type').value;
