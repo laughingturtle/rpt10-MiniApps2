@@ -208,9 +208,12 @@ function (_React$Component) {
   }, {
     key: "setKeyClicked",
     value: function setKeyClicked(e) {
-      // let pinsHit = Math.floor((Math.random() * 10) + 1);
+      var pinsHit = e; // if(e === 13){
+      //   pinsHit = Math.floor((Math.random() * 10) + 1);
+      // }
+
       console.log('***** new roll *****');
-      console.log('e: ', e);
+      console.log('pinsHit: ', pinsHit);
 
       if (this.state.frame === 10 && this.state.roll === 2) {
         this.setState({
@@ -218,7 +221,7 @@ function (_React$Component) {
         });
       } else {
         this.setState({
-          keyClicked: e
+          keyClicked: pinsHit
         });
 
         if (this.state.roll === 2) {
@@ -463,7 +466,9 @@ function (_React$Component) {
       }, "10"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s12",
         className: "non"
-      }))));
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "randomButton noselect"
+      }));
     }
   }]);
 

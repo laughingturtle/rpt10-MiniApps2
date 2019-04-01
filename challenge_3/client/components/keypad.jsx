@@ -40,6 +40,10 @@ render(){
             <div id="s12" className="non"></div>
           </div>
         </div>
+
+        <div className="randomButton noselect">
+          {/* <div id="s13" className="random" onClick={this.handleClick}>Random Bowl!</div> */}
+        </div>
       </div>
     )
   }

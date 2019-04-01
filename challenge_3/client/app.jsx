@@ -75,17 +75,19 @@ gameReset(){
 }
 
 setKeyClicked(e){
-
-  // let pinsHit = Math.floor((Math.random() * 10) + 1);
+  let pinsHit = e;
+  // if(e === 13){
+  //   pinsHit = Math.floor((Math.random() * 10) + 1);
+  // }
   console.log('***** new roll *****')
-  console.log('e: ', e);
+  console.log('pinsHit: ', pinsHit);
   if(this.state.frame === 10 && this.state.roll === 2){
     this.setState({
       gameJustEnded: true
     })
   } else {
   this.setState({
-    keyClicked: e
+    keyClicked: pinsHit
   })
   if (this.state.roll === 2){
     this.setState({
