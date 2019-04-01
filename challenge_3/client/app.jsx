@@ -1,7 +1,8 @@
 import React from 'react'
 import reactDOM from 'react-dom'
 import Keypad from './components/keypad.jsx'
-import ScoreDisplay from './components/ScoreDisplay.jsx';
+import ScoreDisplay from './components/ScoreDisplay.jsx'
+import axios from 'axios'
 
 var display = '';
 
@@ -17,9 +18,9 @@ class App extends React.Component {
       gameInProgress: true,
       gameJustEnded: false
     }
-  this.gamePlay = this.gamePlay.bind(this);
+  this.computeScore = this.computeScore.bind(this);
   this.gameReset = this.gameReset.bind(this);
-  this.setKeyClicked = this.setKeyClicked.bind(this);
+  this.setPinsHit = this.setPinsHit.bind(this);
   this.getGameStats = this.getGameStats.bind(this);
   }
 
@@ -27,7 +28,7 @@ componentDidMount(){
 
 }
 
-gamePlay(){
+computeScore(){
 
   var rollScore = 0;
 
@@ -64,6 +65,37 @@ gamePlay(){
   })
 }
 
+setPinsHit(e){
+  let pinsHit = e;
+  // if(e === 13){
+  //   pinsHit = Math.floor((Math.random() * 10) + 1);
+  // }
+  console.log('***** new roll *****')
+  console.log('pinsHit: ', pinsHit);
+  if(this.state.frame === 10 && this.state.roll === 1){
+    this.setState({
+      roll: this.state.roll + 1,
+      gameJustEnded: true
+    })
+  } else {
+    this.setState({
+      keyClicked: pinsHit
+    })
+    if (this.state.roll === 2){
+    this.setState({
+      roll: 1,
+      frame: this.state.frame + 1
+    })
+    } else {
+      this.setState({
+        pinsLeft: 10 - this.state.keyClicked,
+        roll: this.state.roll + 1
+      })
+    }
+  setTimeout(this.getGameStats(), 5000)
+  }
+}
+
 gameReset(){
   this.setState({
       frame: 1,
@@ -74,56 +106,26 @@ gameReset(){
   })
 }
 
-setKeyClicked(e){
-  let pinsHit = e;
-  // if(e === 13){
-  //   pinsHit = Math.floor((Math.random() * 10) + 1);
-  // }
-  console.log('***** new roll *****')
-  console.log('pinsHit: ', pinsHit);
-  if(this.state.frame === 10 && this.state.roll === 2){
-    this.setState({
-      gameJustEnded: true
-    })
-  } else {
-  this.setState({
-    keyClicked: pinsHit
-  })
-  if (this.state.roll === 2){
-    this.setState({
-      roll: 1,
-      frame: this.state.frame + 1
-    })
-  } else {
-    this.setState({
-      pinsLeft: 10 - this.state.keyClicked,
-      roll: this.state.roll + 1
-    })
-  }
-  setTimeout(this.getGameStats(), 5000)
-}
-}
-
 getGameStats(){
   console.log('game in progress: ', this.state.gameInProgress);
   console.log('key clicked: ', this.state.keyClicked);
   console.log('frame: ', this.state.frame);
   console.log('roll: ', this.state.roll);
-  this.gamePlay();
+  this.computeScore();
   console.log('score: ', this.state.score);
 
 }
 
 render(){
   if(this.state.gameJustEnded) {
-    display = <div onClick={this.gameReset}>Click to Play Again!</div>
+    display = <div className="replay" onClick={() => this.gameReset()}>Click to Play Again!</div>
   } else {
 
   }
     return (
       <div>
         <h1 className="noselect">Bowl Me Over!</h1>
-        <Keypad setKeyClicked={this.setKeyClicked}/>
+        <Keypad setPinsHit={this.setPinsHit}/>
         <ScoreDisplay frame={this.state.frame} roll={this.state.roll} score={this.state.score} gameInProgress={this.gameInProgress}/>
         {display}
       </div>

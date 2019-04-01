@@ -12,7 +12,7 @@ class Keypad extends React.Component {
 handleClick(e){
   // console.log('props in keypad', this.props)
   // console.log(parseInt(e.target.id.substr(1)));
-  this.props.setKeyClicked(parseInt(e.target.id.substr(1)));
+  this.props.setPinsHit(parseInt(e.target.id.substr(1)));
 }
 
 render(){

@@ -18,4 +18,9 @@ ISSUES
 I should just lose the keypad and randomize the number ...
 4) line 14 of scoreDisplay.jsx conditional is backwards but it works
 
+TODO
+1) Fix errors
+2) Write jest ? tests to check scoring is implimented correctly
+3) Add routes to save result in Mongo
+4) Add a scoreboard view with last 30 games from mongo
 */

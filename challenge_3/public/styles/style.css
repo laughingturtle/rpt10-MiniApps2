@@ -112,3 +112,13 @@ h1 {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.replay {
+  cursor: pointer;
+}
+.replay:hover {
+  color:#ff00ff;
+}
+.replay:active {
+  transform: scale(0.85);
+  color:#000;
+}
