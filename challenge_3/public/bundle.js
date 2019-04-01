@@ -100,6 +100,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_keypad_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/keypad.jsx */ "./client/components/keypad.jsx");
+/* harmony import */ var _components_ScoreDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/ScoreDisplay.jsx */ "./client/components/ScoreDisplay.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -110,9 +111,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -121,6 +122,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+var display = '';
 
 var App =
 /*#__PURE__*/
@@ -133,7 +136,19 @@ function (_React$Component) {
     _classCallCheck(this, App);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
-    _this.state = {};
+    _this.state = {
+      frame: 0,
+      roll: 0,
+      score: 0,
+      pinsLeftThisFrame: 0,
+      keyClicked: 0,
+      gameInProgress: true,
+      gameJustEnded: false
+    };
+    _this.gamePlay = _this.gamePlay.bind(_assertThisInitialized(_this));
+    _this.gameReset = _this.gameReset.bind(_assertThisInitialized(_this));
+    _this.setKeyClicked = _this.setKeyClicked.bind(_assertThisInitialized(_this));
+    _this.getGameStats = _this.getGameStats.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -141,9 +156,115 @@ function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {}
   }, {
+    key: "gamePlay",
+    value: function gamePlay() {
+      var rollScore = 0;
+
+      if (this.state.roll === 1) {
+        if (this.state.keyClicked === 10) {
+          console.log('rollscore', rollScore);
+          rollScore = 30;
+          console.log('rollscore: ', rollscore);
+        } else {
+          console.log('key clicked typeof: ', _typeof(this.state.keyClicked));
+          console.log('key clicked value: ', this.state.keyClicked);
+          console.log('rollscore', rollScore);
+          rollScore = this.state.keyClicked;
+          console.log('rollscore: ', rollscore);
+        }
+      }
+
+      if (this.state.roll === 2) {
+        if (this.state.keyClicked === this.state.pinsLeftThisFrame) {
+          console.log('key clicked value: ', this.state.keyClicked);
+          console.log('rollscore', rollScore);
+          rollScore = 10 + this.state.keyClicked;
+          console.log('rollscore: ', rollscore);
+        } else {
+          console.log('key clicked value: ', this.state.keyClicked);
+          console.log('rollscore', rollScore);
+          rollScore = parseInt(this.state.keyClicked);
+          console.log('rollscore: ', rollscore);
+        }
+      }
+
+      console.log('roll: ', this.state.roll);
+      console.log('rollscore: ', rollscore);
+      this.setState({
+        score: this.props.score + rollScore
+      });
+    }
+  }, {
+    key: "gameReset",
+    value: function gameReset() {
+      this.setState({
+        frame: 1,
+        roll: 0,
+        score: 0,
+        gameInProgress: false,
+        gameJustEnded: false
+      });
+    }
+  }, {
+    key: "setKeyClicked",
+    value: function setKeyClicked(e) {
+      // let pinsHit = Math.floor((Math.random() * 10) + 1);
+      console.log('***** new roll *****');
+      console.log('e: ', e);
+
+      if (this.state.frame === 10 && this.state.roll === 2) {
+        this.setState({
+          gameJustEnded: true
+        });
+      } else {
+        this.setState({
+          keyClicked: e
+        });
+
+        if (this.state.roll === 2) {
+          this.setState({
+            roll: 1,
+            frame: this.state.frame + 1
+          });
+        } else {
+          this.setState({
+            pinsLeft: 10 - this.state.keyClicked,
+            roll: this.state.roll + 1
+          });
+        }
+
+        setTimeout(this.getGameStats(), 5000);
+      }
+    }
+  }, {
+    key: "getGameStats",
+    value: function getGameStats() {
+      console.log('game in progress: ', this.state.gameInProgress);
+      console.log('key clicked: ', this.state.keyClicked);
+      console.log('frame: ', this.state.frame);
+      console.log('roll: ', this.state.roll);
+      this.gamePlay();
+      console.log('score: ', this.state.score);
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Bowl Me Over!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_keypad_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+      if (this.state.gameJustEnded) {
+        display = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          onClick: this.gameReset
+        }, "Click to Play Again!");
+      } else {}
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+        className: "noselect"
+      }, "Bowl Me Over!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_keypad_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        setKeyClicked: this.setKeyClicked
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_ScoreDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        frame: this.state.frame,
+        roll: this.state.roll,
+        score: this.state.score,
+        gameInProgress: this.gameInProgress
+      }), display);
     }
   }]);
 
@@ -154,10 +275,10 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 
 /***/ }),
 
-/***/ "./client/components/keypad.jsx":
-/*!**************************************!*\
-  !*** ./client/components/keypad.jsx ***!
-  \**************************************/
+/***/ "./client/components/ScoreDisplay.jsx":
+/*!********************************************!*\
+  !*** ./client/components/ScoreDisplay.jsx ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -184,6 +305,81 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
+var display = '';
+
+var ScoreDisplay =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ScoreDisplay, _React$Component);
+
+  function ScoreDisplay(props) {
+    _classCallCheck(this, ScoreDisplay);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ScoreDisplay).call(this, props));
+  }
+
+  _createClass(ScoreDisplay, [{
+    key: "render",
+    value: function render() {
+      var gameInProgress = this.props.gameInProgress;
+
+      if (gameInProgress !== true) {
+        display = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "gamestats"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "gamestats1"
+        }, "Frame: ", this.props.frame), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "gamestats2"
+        }, "Roll: ", this.props.roll)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "scoreTitle"
+        }, "Score"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "score"
+        }, this.props.score));
+      } else {
+        display = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, " play new game! ");
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, display);
+    }
+  }]);
+
+  return ScoreDisplay;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (ScoreDisplay);
+
+/***/ }),
+
+/***/ "./client/components/keypad.jsx":
+/*!**************************************!*\
+  !*** ./client/components/keypad.jsx ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
 
 var Keypad =
 /*#__PURE__*/
@@ -197,47 +393,64 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Keypad).call(this, props));
     _this.state = {};
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Keypad, [{
+    key: "handleClick",
+    value: function handleClick(e) {
+      // console.log('props in keypad', this.props)
+      // console.log(parseInt(e.target.id.substr(1)));
+      this.props.setKeyClicked(parseInt(e.target.id.substr(1)));
+    }
+  }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "keypad"
+        className: "keypad noselect"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "keypadRow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s1",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "1"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s2",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "2"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s3",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "3")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "keypadRow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s4",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "4"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s5",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "5"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s6",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "6")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "keypadRow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s7",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "7"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s8",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "8"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s9",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "9")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "keypadRow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -245,7 +458,8 @@ function (_React$Component) {
         className: "non"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s10",
-        className: "sq"
+        className: "sq",
+        onClick: this.handleClick
       }, "10"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "s12",
         className: "non"

@@ -1,16 +1,52 @@
-
-h1{
+#app {
+  text-align: center;
+}
+h1 {
   font-family: 'Baloo Chettan', cursive;
   text-align: center;
 }
+.score {
+  color:#ff00ff;
+  font-size: 90px;
+  font-family: 'Baloo Chettan', cursive;
+  margin-top: -30px;
+}
+.gamestats {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.gamestats1 {
+  border: #ccc solid 1px;
+  width: 71px;
+  float: left;
+}
+.gamestats2 {
+  border-top: #ccc solid 1px;
+  border-right: #ccc solid 1px;
+  border-bottom: #ccc solid 1px;
+  border-left: none;
+  width: 52px;
+  float: left;
+}
+.scoreTitle {
+  font-size: 27px;
+  margin-top: -5px;
+}
 .keypad {
   width: 162px;
-  height: 120px;
+  height: 212px;
+  padding-top: 10px;
   cursor: pointer;
+  display: inline-block;
+  margin-bottom: 40px;
 }
 .keypadRow {
   border: none;
 }
+/* .keyDisplay {
+  height: 212px;
+  display: block;
+} */
 .sq {
   width: 50px;
   height: 50px;
@@ -38,12 +74,18 @@ h1{
   margin: 2px;
 }
 .sq:hover {
-  /* padding-top: -10px; */
-  /* font-size: 31px; */
-  /* color: #ff00ff; */
   border-color:#ff00ff;
 }
 .sq:active{
   transform: scale(0.85);
 }
 
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

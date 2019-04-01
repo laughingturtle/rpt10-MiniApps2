@@ -1,39 +1,44 @@
 import React from 'react';
 
-
 class Keypad extends React.Component {
   constructor(props){
     super(props);
     this.state = {
 
     }
-
+  this.handleClick = this.handleClick.bind(this);
   }
+
+handleClick(e){
+  // console.log('props in keypad', this.props)
+  // console.log(parseInt(e.target.id.substr(1)));
+  this.props.setKeyClicked(parseInt(e.target.id.substr(1)));
+}
 
 render(){
     return (
       <div>
-        <div className="keypad">
+        <div className="keypad noselect">
           <div className="keypadRow">
-            <div id="s1" className="sq">1</div>
-            <div id="s2" className="sq">2</div>
-            <div id="s3" className="sq">3</div>
+            <div id="s1" className="sq" onClick={this.handleClick}>1</div>
+            <div id="s2" className="sq" onClick={this.handleClick}>2</div>
+            <div id="s3" className="sq" onClick={this.handleClick}>3</div>
           </div>
           <div className="keypadRow">
-            <div id="s4" className="sq">4</div>
-            <div id="s5" className="sq">5</div>
-            <div id="s6" className="sq">6</div>
+            <div id="s4" className="sq" onClick={this.handleClick}>4</div>
+            <div id="s5" className="sq" onClick={this.handleClick}>5</div>
+            <div id="s6" className="sq" onClick={this.handleClick}>6</div>
           </div>
           <div className="keypadRow">
-            <div id="s7" className="sq">7</div>
-            <div id="s8" className="sq">8</div>
-            <div id="s9" className="sq">9</div>
+            <div id="s7" className="sq" onClick={this.handleClick}>7</div>
+            <div id="s8" className="sq" onClick={this.handleClick}>8</div>
+            <div id="s9" className="sq" onClick={this.handleClick}>9</div>
           </div>
           <div className="keypadRow">
             <div id="s11" className="non"></div>
-            <div id="s10" className="sq">10</div>
+            <div id="s10" className="sq" onClick={this.handleClick}>10</div>
             <div id="s12" className="non"></div>
-            </div>
+          </div>
         </div>
       </div>
     )
