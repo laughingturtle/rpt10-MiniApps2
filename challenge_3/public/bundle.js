@@ -152,12 +152,39 @@ function (_React$Component) {
     _this.gameReset = _this.gameReset.bind(_assertThisInitialized(_this));
     _this.setPinsHit = _this.setPinsHit.bind(_assertThisInitialized(_this));
     _this.getGameStats = _this.getGameStats.bind(_assertThisInitialized(_this));
+    _this.saveScore = _this.saveScore.bind(_assertThisInitialized(_this));
+    _this.retrieveScore = _this.retrieveScore.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(App, [{
     key: "componentDidMount",
-    value: function componentDidMount() {}
+    value: function componentDidMount() {
+      this.retrieveScores();
+    }
+  }, {
+    key: "saveScore",
+    value: function saveScore() {
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('/savescores', {
+        params: {
+          score: this.state.score
+        }
+      }).then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
+      this.retrieveScore();
+    }
+  }, {
+    key: "retrieveScore",
+    value: function retrieveScore() {
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get('/getscores').then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
   }, {
     key: "computeScore",
     value: function computeScore() {
@@ -212,6 +239,7 @@ function (_React$Component) {
           roll: this.state.roll + 1,
           gameJustEnded: true
         });
+        this.saveScore();
       } else {
         this.setState({
           keyClicked: pinsHit

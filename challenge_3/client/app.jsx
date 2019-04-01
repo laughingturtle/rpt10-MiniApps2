@@ -22,14 +22,41 @@ class App extends React.Component {
   this.gameReset = this.gameReset.bind(this);
   this.setPinsHit = this.setPinsHit.bind(this);
   this.getGameStats = this.getGameStats.bind(this);
+  this.saveScore = this.saveScore.bind(this);
+  this.retrieveScore = this.retrieveScore.bind(this);
   }
 
 componentDidMount(){
-
+  this.retrieveScores();
 }
 
-computeScore(){
+saveScore(){
+  axios.get('/savescores', {
+    params: {
+      score: this.state.score
+    }
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  this.retrieveScore();
+}
 
+retrieveScore(){
+  axios.get('/getscores')
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+
+computeScore(){
   var rollScore = 0;
 
   if(this.state.roll === 1) {
@@ -77,6 +104,7 @@ setPinsHit(e){
       roll: this.state.roll + 1,
       gameJustEnded: true
     })
+    this.saveScore();
   } else {
     this.setState({
       keyClicked: pinsHit
