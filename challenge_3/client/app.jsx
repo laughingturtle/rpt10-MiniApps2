@@ -1,7 +1,8 @@
 import React from 'react'
 import reactDOM from 'react-dom'
 import Keypad from './components/keypad.jsx'
-import ScoreDisplay from './components/ScoreDisplay.jsx'
+import ScoreBoard from './components/scoreBoard.jsx'
+import ScoresList from './components/scoresList.jsx'
 import axios from 'axios'
 
 var display = '';
@@ -152,10 +153,15 @@ render(){
   }
     return (
       <div>
-        <h1 className="noselect">Bowl Me Over!</h1>
-        <Keypad setPinsHit={this.setPinsHit}/>
-        <ScoreDisplay frame={this.state.frame} roll={this.state.roll} score={this.state.score} gameInProgress={this.gameInProgress}/>
-        {display}
+        <div>
+          <h1 className="noselect">Bowl Me Over!</h1>
+          <Keypad setPinsHit={this.setPinsHit}/>
+          <ScoreBoard frame={this.state.frame} roll={this.state.roll} score={this.state.score} gameInProgress={this.gameInProgress}/>
+          {display}
+        </div>
+        <div>
+          <ScoresList />
+        </div>
       </div>
     )
   }

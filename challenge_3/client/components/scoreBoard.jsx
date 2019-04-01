@@ -2,7 +2,7 @@ import React from 'react'
 
 var display = '';
 
-class ScoreDisplay extends React.Component{
+class ScoreBoard extends React.Component{
   constructor(props){
     super(props);
 
@@ -32,4 +32,4 @@ class ScoreDisplay extends React.Component{
   }
 }
 
-export default ScoreDisplay;
+export default ScoreBoard;
