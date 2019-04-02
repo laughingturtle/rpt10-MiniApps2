@@ -30,4 +30,8 @@ db.score.insert({
    score: 87,
    date: {dateCreated: new Date()}
 })
+db.counters.insert({
+  "game_id":"gameid",
+  "sequence_value": 0
+})
 */

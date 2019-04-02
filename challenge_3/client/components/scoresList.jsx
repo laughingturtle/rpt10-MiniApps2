@@ -10,15 +10,15 @@ class ScoresList extends React.Component{
     for (var i = 1; i <= 30; i++) {
         numbers.push(i);
     }
-    console.log('data in scoreslist page', this.props.data)
+    // console.log('data in scoreslist page', this.props.data)
 
     const items = this.props.data.map((item, key) =>
-        <li key={key}>Game {key} - {item.score} pts</li>
+        <li key={key}>Game {key+1} - {item.score} pts</li>
     );
 
     return (
       <div>
-        Scores List
+        Last 30 Scores
         <ul>
           {items}
         </ul>

@@ -35,6 +35,7 @@ componentDidMount(){
 
 saveScore(){
   console.log('score in axios: ', this.state.score)
+  console.log('**** saveScore Status triggered')
   var that = this;
   axios.post('/savescores', {
       score: that.state.score
@@ -55,7 +56,7 @@ retrieveScore(){
   var that = this;
   axios.get('/getscores')
   .then(function (response) {
-    console.log('scores on the client: ', response.data);
+  //  console.log('scores on the client: ', response.data);
     that.setState({
       scoreSaved: true,
       data: response.data
@@ -73,6 +74,7 @@ checkGameStatus(e){
       gameJustEnded: true
     })
     if(!this.state.scoreSaved){
+      console.log('**** checkGame Status triggered')
       this.saveScore();
     }
   } else {
@@ -85,8 +87,8 @@ setPinsHit(e){
   // if(e === 13){
   //   keyClicked = Math.floor((Math.random() * 10) + 1);
   // }
-  console.log('e', e)
-  console.log('game on ? ', this.state.gameInProgress);
+  // console.log('e', e)
+  // console.log('game on ? ', this.state.gameInProgress);
   if(this.state.gameInProgress){
     this.setState({
       pinsHit: e
@@ -159,7 +161,6 @@ gameReset(){
       scoreSaved: false
   })
 }
-
 
 render(){
   if(this.state.gameJustEnded) {

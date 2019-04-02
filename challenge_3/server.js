@@ -9,11 +9,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + '/public/'));
 
+// function getNextSequenceValue(sequenceName){
+//   console.log('db', db);
+//   var sequenceDocument = db.findAndModify({
+//      query:{game_id: sequenceName},
+//      update: {$inc:{sequence_value:1}},
+//      new:true
+//   });
+//   return sequenceDocument.sequence_value;
+// }
+
 app.post('/savescores', function(req, res){
-  console.log('**** // reqs on the server: ', req.body);
   db.create({
-    score: req.body.score
-    }, null, { limit: 30 }, function(err, result){
+    score: req.body.score,
+    date: Date.now()
+    }, function(err, result){
       if (err){
         console.log('error inserting - server ', err);
         res.status(400).send('error inserting - server')
@@ -26,12 +36,12 @@ app.post('/savescores', function(req, res){
 });
 
 app.get('/getscores', function(req, res){
-  db.find({}, function(err, result){
+  db.find({}, null, {sort: '-date', limit: 30 }, function(err, result){
     if (err){
       console.log('error getting records - server ', err);
       res.status(400).send('error getting records - server')
     } else {
-      console.log('results: ', result);
+     // console.log('results: ', result);
       res.status(200).send(result);
     }
   })

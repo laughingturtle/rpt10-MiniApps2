@@ -170,6 +170,7 @@ function (_React$Component) {
     key: "saveScore",
     value: function saveScore() {
       console.log('score in axios: ', this.state.score);
+      console.log('**** saveScore Status triggered');
       var that = this;
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.post('/savescores', {
         score: that.state.score
@@ -188,7 +189,7 @@ function (_React$Component) {
     value: function retrieveScore() {
       var that = this;
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.get('/getscores').then(function (response) {
-        console.log('scores on the client: ', response.data);
+        //  console.log('scores on the client: ', response.data);
         that.setState({
           scoreSaved: true,
           data: response.data
@@ -207,6 +208,7 @@ function (_React$Component) {
         });
 
         if (!this.state.scoreSaved) {
+          console.log('**** checkGame Status triggered');
           this.saveScore();
         }
       } else {
@@ -222,9 +224,8 @@ function (_React$Component) {
       // if(e === 13){
       //   keyClicked = Math.floor((Math.random() * 10) + 1);
       // }
-      console.log('e', e);
-      console.log('game on ? ', this.state.gameInProgress);
-
+      // console.log('e', e)
+      // console.log('game on ? ', this.state.gameInProgress);
       if (this.state.gameInProgress) {
         this.setState({
           pinsHit: e
@@ -598,15 +599,15 @@ function (_React$Component) {
 
       for (var i = 1; i <= 30; i++) {
         numbers.push(i);
-      }
+      } // console.log('data in scoreslist page', this.props.data)
 
-      console.log('data in scoreslist page', this.props.data);
+
       var items = this.props.data.map(function (item, key) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           key: key
-        }, "Game ", key, " - ", item.score, " pts");
+        }, "Game ", key + 1, " - ", item.score, " pts");
       });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Scores List", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, items));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Last 30 Scores", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, items));
     }
   }]);
 
