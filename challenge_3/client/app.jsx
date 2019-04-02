@@ -18,7 +18,9 @@ class App extends React.Component {
       pinsHit: 0,
       pinsLeftThisFrame: 10,
       gameInProgress: true,
-      gameJustEnded: false
+      gameJustEnded: false,
+      scoreSaved: false,
+      data: []
     }
   this.gameReset = this.gameReset.bind(this);
   this.setPinsHit = this.setPinsHit.bind(this);
@@ -39,6 +41,9 @@ saveScore(){
   })
   .then(function (response) {
     console.log(response);
+    that.setState({
+      scoreSaved: true
+    })
   })
   .catch(function (error) {
     console.log(error);
@@ -47,9 +52,14 @@ saveScore(){
 }
 
 retrieveScore(){
+  var that = this;
   axios.get('/getscores')
   .then(function (response) {
     console.log('scores on the client: ', response.data);
+    that.setState({
+      scoreSaved: true,
+      data: response.data
+    })
   })
   .catch(function (error) {
     console.log(error);
@@ -62,6 +72,9 @@ checkGameStatus(e){
       gameInProgress: false,
       gameJustEnded: true
     })
+    if(!this.state.scoreSaved){
+      this.saveScore();
+    }
   } else {
     this.setPinsHit(e);
   }
@@ -142,7 +155,8 @@ gameReset(){
       pinsHit: 0,
       rollScore: 0,
       gameInProgress: true,
-      gameJustEnded: false
+      gameJustEnded: false,
+      scoreSaved: false
   })
 }
 
@@ -163,7 +177,7 @@ render(){
         </div>
         <div className="col">
           <div className="scoreslist">
-            <ScoresList />
+            <ScoresList data={this.state.data}/>
           </div>
         </div>
       </div>

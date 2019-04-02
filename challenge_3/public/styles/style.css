@@ -131,5 +131,22 @@ h1 {
   display: inline-block;
 }
 .scoreslist {
-  margin-top: 76px;
+  margin-left:50px;
+  margin-top: 26px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  border: dashed 1px #ccc;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+}
+li {
+  list-style-type:none;
+  font-size: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: normal;
+}
+ul {
+  padding-top: 7px;
+  padding-left: 0;
 }

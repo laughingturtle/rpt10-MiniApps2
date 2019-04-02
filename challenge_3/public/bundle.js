@@ -149,7 +149,9 @@ function (_React$Component) {
       pinsHit: 0,
       pinsLeftThisFrame: 10,
       gameInProgress: true,
-      gameJustEnded: false
+      gameJustEnded: false,
+      scoreSaved: false,
+      data: []
     };
     _this.gameReset = _this.gameReset.bind(_assertThisInitialized(_this));
     _this.setPinsHit = _this.setPinsHit.bind(_assertThisInitialized(_this));
@@ -173,6 +175,9 @@ function (_React$Component) {
         score: that.state.score
       }).then(function (response) {
         console.log(response);
+        that.setState({
+          scoreSaved: true
+        });
       }).catch(function (error) {
         console.log(error);
       });
@@ -181,8 +186,13 @@ function (_React$Component) {
   }, {
     key: "retrieveScore",
     value: function retrieveScore() {
+      var that = this;
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.get('/getscores').then(function (response) {
         console.log('scores on the client: ', response.data);
+        that.setState({
+          scoreSaved: true,
+          data: response.data
+        });
       }).catch(function (error) {
         console.log(error);
       });
@@ -195,6 +205,10 @@ function (_React$Component) {
           gameInProgress: false,
           gameJustEnded: true
         });
+
+        if (!this.state.scoreSaved) {
+          this.saveScore();
+        }
       } else {
         this.setPinsHit(e);
       }
@@ -284,7 +298,8 @@ function (_React$Component) {
         pinsHit: 0,
         rollScore: 0,
         gameInProgress: true,
-        gameJustEnded: false
+        gameJustEnded: false,
+        scoreSaved: false
       });
     }
   }, {
@@ -320,7 +335,9 @@ function (_React$Component) {
         className: "col"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "scoreslist"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_scoresList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], null))));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_scoresList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        data: this.state.data
+      }))));
     }
   }]);
 
@@ -577,7 +594,19 @@ function (_React$Component) {
   _createClass(ScoresList, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "last 30 scores list (move to left side);");
+      var numbers = [];
+
+      for (var i = 1; i <= 30; i++) {
+        numbers.push(i);
+      }
+
+      console.log('data in scoreslist page', this.props.data);
+      var items = this.props.data.map(function (item, key) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: key
+        }, "Game ", key, " - ", item.score, " pts");
+      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Scores List", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, items));
     }
   }]);
 
