@@ -17,10 +17,17 @@ ISSUES
 3) What's the actual game play here? I don't get it, I'm using the international scoring.
 I should just lose the keypad and randomize the number ...
 4) line 14 of scoreDisplay.jsx conditional is backwards but it works
+5) frame and roll count no longer stopping at 10 && 2  - / fix
 
 TODO
 1) Fix errors
 2) Write jest ? tests to check scoring is implimented correctly
 3) Add routes to save result in Mongo
 4) Add a scoreboard view with last 30 games from mongo
+
+
+db.score.insert({
+   score: 87,
+   date: {dateCreated: new Date()}
+})
 */

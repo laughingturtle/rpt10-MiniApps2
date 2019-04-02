@@ -11,31 +11,31 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      frame: 0,
+      frame: 1,
       roll: 0,
       score: 0,
-      pinsLeftThisFrame: 0,
-      keyClicked: 0,
+      rollScore: 0,
+      pinsHit: 0,
+      pinsLeftThisFrame: 10,
       gameInProgress: true,
       gameJustEnded: false
     }
-  this.computeScore = this.computeScore.bind(this);
   this.gameReset = this.gameReset.bind(this);
   this.setPinsHit = this.setPinsHit.bind(this);
-  this.getGameStats = this.getGameStats.bind(this);
   this.saveScore = this.saveScore.bind(this);
   this.retrieveScore = this.retrieveScore.bind(this);
+  this.checkGameStatus = this.checkGameStatus.bind(this);
   }
 
 componentDidMount(){
-  this.retrieveScores();
+  this.retrieveScore();
 }
 
 saveScore(){
-  axios.get('/savescores', {
-    params: {
-      score: this.state.score
-    }
+  console.log('score in axios: ', this.state.score)
+  var that = this;
+  axios.post('/savescores', {
+      score: that.state.score
   })
   .then(function (response) {
     console.log(response);
@@ -49,79 +49,88 @@ saveScore(){
 retrieveScore(){
   axios.get('/getscores')
   .then(function (response) {
-    console.log(response);
+    console.log('scores on the client: ', response.data);
   })
   .catch(function (error) {
     console.log(error);
   });
 }
 
-
-computeScore(){
-  var rollScore = 0;
-
-  if(this.state.roll === 1) {
-    if (this.state.keyClicked === 10){
-      console.log('rollscore', rollScore)
-      rollScore = 30;
-      console.log('rollscore: ', rollscore);
-    } else {
-      console.log('key clicked typeof: ', typeof this.state.keyClicked)
-      console.log('key clicked value: ', this.state.keyClicked)
-      console.log('rollscore', rollScore)
-      rollScore = this.state.keyClicked;
-      console.log('rollscore: ', rollscore);
-    }
+checkGameStatus(e){
+  if(this.state.frame === 10 && this.state.roll === 2 || this.state.frame === 10 && this.state.roll === 1 && this.state.rollScore === 30){
+    this.setState({
+      gameInProgress: false,
+      gameJustEnded: true
+    })
+  } else {
+    this.setPinsHit(e);
   }
-  if(this.state.roll === 2) {
-    if (this.state.keyClicked === this.state.pinsLeftThisFrame){
-      console.log('key clicked value: ', this.state.keyClicked)
-      console.log('rollscore', rollScore)
-      rollScore = 10 + this.state.keyClicked;
-      console.log('rollscore: ', rollscore);
-    } else {
-      console.log('key clicked value: ', this.state.keyClicked)
-      console.log('rollscore', rollScore)
-      rollScore = parseInt(this.state.keyClicked);
-      console.log('rollscore: ', rollscore);
-    }
-  }
-  console.log('roll: ', this.state.roll);
-  console.log('rollscore: ', rollscore);
-  this.setState({
-    score: this.props.score + rollScore
-  })
 }
 
 setPinsHit(e){
-  let pinsHit = e;
+  //let keyClicked = e;
   // if(e === 13){
-  //   pinsHit = Math.floor((Math.random() * 10) + 1);
+  //   keyClicked = Math.floor((Math.random() * 10) + 1);
   // }
-  console.log('***** new roll *****')
-  console.log('pinsHit: ', pinsHit);
-  if(this.state.frame === 10 && this.state.roll === 1){
+  console.log('e', e)
+  console.log('game on ? ', this.state.gameInProgress);
+  if(this.state.gameInProgress){
     this.setState({
-      roll: this.state.roll + 1,
-      gameJustEnded: true
+      pinsHit: e
     })
-    this.saveScore();
-  } else {
-    this.setState({
-      keyClicked: pinsHit
-    })
-    if (this.state.roll === 2){
-    this.setState({
-      roll: 1,
-      frame: this.state.frame + 1
-    })
-    } else {
+    /* game logic for 1st roll */
+    if (this.state.roll === 0 || this.state.roll === 1){
       this.setState({
-        pinsLeft: 10 - this.state.keyClicked,
-        roll: this.state.roll + 1
+        roll: this.state.roll + 1,
+        pinsLeftThisFrame: 10 - e
       })
+      /* Scoring for 1st roll */
+      if (e === 10){
+        this.setState({
+          rollScore: 30,
+          roll: 1,
+          frame: this.state.frame + 1
+        }, () => {
+          this.setState({
+            score: this.state.score + this.state.rollScore
+          })
+        })
+      } else {
+        this.setState({
+          rollScore: e
+        }, () => {
+          this.setState({
+            score: this.state.score + this.state.rollScore
+          })
+        })
+      }
+    /* End scoring for 1st roll */
+
+    /* game logic for 1st roll */
+    }  else if (this.state.roll === 2){
+        this.setState({
+          roll: 1,
+          frame: this.state.frame + 1
+        })
+      /* Scoring for 2nd roll */
+      if (e === this.state.pinsLeftThisFrame){
+        this.setState({
+          rollScore: e + 10
+        }, () => {
+          this.setState({
+            score: this.state.score + this.state.rollScore
+          })
+        })
+      } else {
+        this.setState({
+          rollScore: e
+        }, () => {
+          this.setState({
+            score: this.state.score + this.state.rollScore
+          })
+        })
+      }
     }
-  setTimeout(this.getGameStats(), 5000)
   }
 }
 
@@ -130,37 +139,32 @@ gameReset(){
       frame: 1,
       roll: 0,
       score: 0,
-      gameInProgress: false,
+      pinsHit: 0,
+      rollScore: 0,
+      gameInProgress: true,
       gameJustEnded: false
   })
 }
 
-getGameStats(){
-  console.log('game in progress: ', this.state.gameInProgress);
-  console.log('key clicked: ', this.state.keyClicked);
-  console.log('frame: ', this.state.frame);
-  console.log('roll: ', this.state.roll);
-  this.computeScore();
-  console.log('score: ', this.state.score);
-
-}
 
 render(){
   if(this.state.gameJustEnded) {
     display = <div className="replay" onClick={() => this.gameReset()}>Click to Play Again!</div>
   } else {
-
+    display = '';
   }
     return (
-      <div>
-        <div>
+      <div className="innercontainer">
+        <div className="col">
           <h1 className="noselect">Bowl Me Over!</h1>
-          <Keypad setPinsHit={this.setPinsHit}/>
+          <Keypad checkGameStatus={this.checkGameStatus}/>
           <ScoreBoard frame={this.state.frame} roll={this.state.roll} score={this.state.score} gameInProgress={this.gameInProgress}/>
           {display}
         </div>
-        <div>
-          <ScoresList />
+        <div className="col">
+          <div className="scoreslist">
+            <ScoresList />
+          </div>
         </div>
       </div>
     )

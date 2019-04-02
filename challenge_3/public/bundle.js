@@ -142,35 +142,35 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
-      frame: 0,
+      frame: 1,
       roll: 0,
       score: 0,
-      pinsLeftThisFrame: 0,
-      keyClicked: 0,
+      rollScore: 0,
+      pinsHit: 0,
+      pinsLeftThisFrame: 10,
       gameInProgress: true,
       gameJustEnded: false
     };
-    _this.computeScore = _this.computeScore.bind(_assertThisInitialized(_this));
     _this.gameReset = _this.gameReset.bind(_assertThisInitialized(_this));
     _this.setPinsHit = _this.setPinsHit.bind(_assertThisInitialized(_this));
-    _this.getGameStats = _this.getGameStats.bind(_assertThisInitialized(_this));
     _this.saveScore = _this.saveScore.bind(_assertThisInitialized(_this));
     _this.retrieveScore = _this.retrieveScore.bind(_assertThisInitialized(_this));
+    _this.checkGameStatus = _this.checkGameStatus.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(App, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.retrieveScores();
+      this.retrieveScore();
     }
   }, {
     key: "saveScore",
     value: function saveScore() {
-      axios__WEBPACK_IMPORTED_MODULE_5___default.a.get('/savescores', {
-        params: {
-          score: this.state.score
-        }
+      console.log('score in axios: ', this.state.score);
+      var that = this;
+      axios__WEBPACK_IMPORTED_MODULE_5___default.a.post('/savescores', {
+        score: that.state.score
       }).then(function (response) {
         console.log(response);
       }).catch(function (error) {
@@ -182,84 +182,96 @@ function (_React$Component) {
     key: "retrieveScore",
     value: function retrieveScore() {
       axios__WEBPACK_IMPORTED_MODULE_5___default.a.get('/getscores').then(function (response) {
-        console.log(response);
+        console.log('scores on the client: ', response.data);
       }).catch(function (error) {
         console.log(error);
       });
     }
   }, {
-    key: "computeScore",
-    value: function computeScore() {
-      var rollScore = 0;
-
-      if (this.state.roll === 1) {
-        if (this.state.keyClicked === 10) {
-          console.log('rollscore', rollScore);
-          rollScore = 30;
-          console.log('rollscore: ', rollscore);
-        } else {
-          console.log('key clicked typeof: ', _typeof(this.state.keyClicked));
-          console.log('key clicked value: ', this.state.keyClicked);
-          console.log('rollscore', rollScore);
-          rollScore = this.state.keyClicked;
-          console.log('rollscore: ', rollscore);
-        }
+    key: "checkGameStatus",
+    value: function checkGameStatus(e) {
+      if (this.state.frame === 10 && this.state.roll === 2 || this.state.frame === 10 && this.state.roll === 1 && this.state.rollScore === 30) {
+        this.setState({
+          gameInProgress: false,
+          gameJustEnded: true
+        });
+      } else {
+        this.setPinsHit(e);
       }
-
-      if (this.state.roll === 2) {
-        if (this.state.keyClicked === this.state.pinsLeftThisFrame) {
-          console.log('key clicked value: ', this.state.keyClicked);
-          console.log('rollscore', rollScore);
-          rollScore = 10 + this.state.keyClicked;
-          console.log('rollscore: ', rollscore);
-        } else {
-          console.log('key clicked value: ', this.state.keyClicked);
-          console.log('rollscore', rollScore);
-          rollScore = parseInt(this.state.keyClicked);
-          console.log('rollscore: ', rollscore);
-        }
-      }
-
-      console.log('roll: ', this.state.roll);
-      console.log('rollscore: ', rollscore);
-      this.setState({
-        score: this.props.score + rollScore
-      });
     }
   }, {
     key: "setPinsHit",
     value: function setPinsHit(e) {
-      var pinsHit = e; // if(e === 13){
-      //   pinsHit = Math.floor((Math.random() * 10) + 1);
+      var _this2 = this;
+
+      //let keyClicked = e;
+      // if(e === 13){
+      //   keyClicked = Math.floor((Math.random() * 10) + 1);
       // }
+      console.log('e', e);
+      console.log('game on ? ', this.state.gameInProgress);
 
-      console.log('***** new roll *****');
-      console.log('pinsHit: ', pinsHit);
-
-      if (this.state.frame === 10 && this.state.roll === 1) {
+      if (this.state.gameInProgress) {
         this.setState({
-          roll: this.state.roll + 1,
-          gameJustEnded: true
+          pinsHit: e
         });
-        this.saveScore();
-      } else {
-        this.setState({
-          keyClicked: pinsHit
-        });
+        /* game logic for 1st roll */
 
-        if (this.state.roll === 2) {
+        if (this.state.roll === 0 || this.state.roll === 1) {
+          this.setState({
+            roll: this.state.roll + 1,
+            pinsLeftThisFrame: 10 - e
+          });
+          /* Scoring for 1st roll */
+
+          if (e === 10) {
+            this.setState({
+              rollScore: 30,
+              roll: 1,
+              frame: this.state.frame + 1
+            }, function () {
+              _this2.setState({
+                score: _this2.state.score + _this2.state.rollScore
+              });
+            });
+          } else {
+            this.setState({
+              rollScore: e
+            }, function () {
+              _this2.setState({
+                score: _this2.state.score + _this2.state.rollScore
+              });
+            });
+          }
+          /* End scoring for 1st roll */
+
+          /* game logic for 1st roll */
+
+        } else if (this.state.roll === 2) {
           this.setState({
             roll: 1,
             frame: this.state.frame + 1
           });
-        } else {
-          this.setState({
-            pinsLeft: 10 - this.state.keyClicked,
-            roll: this.state.roll + 1
-          });
-        }
+          /* Scoring for 2nd roll */
 
-        setTimeout(this.getGameStats(), 5000);
+          if (e === this.state.pinsLeftThisFrame) {
+            this.setState({
+              rollScore: e + 10
+            }, function () {
+              _this2.setState({
+                score: _this2.state.score + _this2.state.rollScore
+              });
+            });
+          } else {
+            this.setState({
+              rollScore: e
+            }, function () {
+              _this2.setState({
+                score: _this2.state.score + _this2.state.rollScore
+              });
+            });
+          }
+        }
       }
     }
   }, {
@@ -269,44 +281,46 @@ function (_React$Component) {
         frame: 1,
         roll: 0,
         score: 0,
-        gameInProgress: false,
+        pinsHit: 0,
+        rollScore: 0,
+        gameInProgress: true,
         gameJustEnded: false
       });
     }
   }, {
-    key: "getGameStats",
-    value: function getGameStats() {
-      console.log('game in progress: ', this.state.gameInProgress);
-      console.log('key clicked: ', this.state.keyClicked);
-      console.log('frame: ', this.state.frame);
-      console.log('roll: ', this.state.roll);
-      this.computeScore();
-      console.log('score: ', this.state.score);
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.state.gameJustEnded) {
         display = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "replay",
           onClick: function onClick() {
-            return _this2.gameReset();
+            return _this3.gameReset();
           }
         }, "Click to Play Again!");
-      } else {}
+      } else {
+        display = '';
+      }
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "innercontainer"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "noselect"
       }, "Bowl Me Over!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_keypad_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        setPinsHit: this.setPinsHit
+        checkGameStatus: this.checkGameStatus
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_scoreBoard_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         frame: this.state.frame,
         roll: this.state.roll,
         score: this.state.score,
         gameInProgress: this.gameInProgress
-      }), display), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_scoresList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+      }), display), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "scoreslist"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_scoresList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], null))));
     }
   }]);
 
@@ -369,7 +383,7 @@ function (_React$Component) {
     value: function handleClick(e) {
       // console.log('props in keypad', this.props)
       // console.log(parseInt(e.target.id.substr(1)));
-      this.props.setPinsHit(parseInt(e.target.id.substr(1)));
+      this.props.checkGameStatus(parseInt(e.target.id.substr(1)));
     }
   }, {
     key: "render",
@@ -563,7 +577,7 @@ function (_React$Component) {
   _createClass(ScoresList, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "last 30 scores list");
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "last 30 scores list (move to left side);");
     }
   }]);
 

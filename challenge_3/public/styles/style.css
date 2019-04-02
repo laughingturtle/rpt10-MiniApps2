@@ -38,7 +38,7 @@ h1 {
   padding-top: 10px;
   cursor: pointer;
   display: inline-block;
-   margin-bottom: 34px;
+  margin-bottom: 34px;
 }
 .keypadRow {
   border: none;
@@ -121,4 +121,15 @@ h1 {
 .replay:active {
   transform: scale(0.85);
   color:#000;
+}
+.col {
+  float: left;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.innercontainer {
+  display: inline-block;
+}
+.scoreslist {
+  margin-top: 76px;
 }

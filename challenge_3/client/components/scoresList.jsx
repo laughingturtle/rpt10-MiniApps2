@@ -8,7 +8,7 @@ class ScoresList extends React.Component{
   render(){
     return (
       <div>
-        last 30 scores list
+        last 30 scores list (move to left side);
       </div>
     )
   }
