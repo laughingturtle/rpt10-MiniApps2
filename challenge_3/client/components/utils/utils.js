@@ -12,18 +12,16 @@ spare 10 - points plus the rest of the pins you knocked down if clear frame on 2
 1 point per pin if otherwise
 
 ISSUES
-1) state not updating fast enough... getting the previous state in the console but not on the display.
-2) rollScore not working - variable not accessible
-3) What's the actual game play here? I don't get it, I'm using the international scoring.
-I should just lose the keypad and randomize the number ...
-4) line 14 of scoreDisplay.jsx conditional is backwards but it works
-5) frame and roll count no longer stopping at 10 && 2  - / fix
+1) app only sends data to db on 2nd click after end of game
+2) sometimes game does not stop
+3) need to account for only having a certain amount of numbers left...
 
 TODO
-1) Fix errors
+1) Fix error
 2) Write jest ? tests to check scoring is implimented correctly
 3) Add routes to save result in Mongo
 4) Add a scoreboard view with last 30 games from mongo
+5) pinsLeftThisFrame not updating correctly.
 
 
 db.score.insert({

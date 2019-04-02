@@ -83,21 +83,21 @@ checkGameStatus(e){
 }
 
 setPinsHit(e){
-  //let keyClicked = e;
-  // if(e === 13){
-  //   keyClicked = Math.floor((Math.random() * 10) + 1);
-  // }
-  // console.log('e', e)
-  // console.log('game on ? ', this.state.gameInProgress);
   if(this.state.gameInProgress){
+    /* random button */
+    if(e === 13){
+      console.log('pins left', this.state.pinsLeftThisFrame)
+      e = Math.floor((Math.random() * this.state.pinsLeftThisFrame) + 1);
+      console.log('e:', e)
+    }
     this.setState({
       pinsHit: e
     })
     /* game logic for 1st roll */
     if (this.state.roll === 0 || this.state.roll === 1){
       this.setState({
-        roll: this.state.roll + 1,
-        pinsLeftThisFrame: 10 - e
+        pinsLeftThisFrame: 10 - e,
+        roll: this.state.roll + 1
       })
       /* Scoring for 1st roll */
       if (e === 10){
@@ -121,11 +121,12 @@ setPinsHit(e){
       }
     /* End scoring for 1st roll */
 
-    /* game logic for 1st roll */
+    /* game logic for 2nd roll */
     }  else if (this.state.roll === 2){
         this.setState({
           roll: 1,
-          frame: this.state.frame + 1
+          frame: this.state.frame + 1,
+          pinsLeftThisFrame: 10
         })
       /* Scoring for 2nd roll */
       if (e === this.state.pinsLeftThisFrame){
