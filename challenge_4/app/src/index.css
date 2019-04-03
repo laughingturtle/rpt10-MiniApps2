@@ -18,8 +18,9 @@ code {
  float: left;
 }
 .board {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
+  cursor: pointer;
 }
 .square:hover {
   background-color: #fff;
