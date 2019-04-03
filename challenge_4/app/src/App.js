@@ -13,10 +13,13 @@ class App extends Component{
   }
 
   componentDidMount() {
-    makeGameBoard();
+    this.setState({
+      gameboard: makeGameBoard()
+    })
   }
 
   render() {
+    console.log('board in state: ', this.state.gameboard)
     return (
       <div className="App">
         <Board squares={this.state.squares}/>

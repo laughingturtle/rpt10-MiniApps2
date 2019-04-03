@@ -1,7 +1,7 @@
 function makeGameBoard() {
   let board = [];
   let mines = [];
-  console.log('board:', board);
+  //console.log('board:', board);
 
   function generateBoard() {
     var count = 1;
@@ -14,7 +14,7 @@ function makeGameBoard() {
       board.push(data);
 
     }
-    console.log(board);
+   // console.log(board);
   }
 
   function generateMinesPlacementArray() {
@@ -128,8 +128,9 @@ function makeGameBoard() {
   generateMinesPlacementArray();
   addMinesToBoard();
   addNumberHintsToBoard();
-  console.log('board with mines: ', board);
+  // console.log('board with mines: ', board);
 
+  return board;
   // add board to state / to redux
 }
 module.exports = makeGameBoard;
