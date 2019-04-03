@@ -7,8 +7,8 @@ class App extends Component{
   constructor(props){
     super(props);
     this.state = {
-      gameboard:[] /* function that makes the board */,
-      squares: 100
+      gameboard:[],
+      numberOfSquares: 100
     }
   }
 
@@ -22,7 +22,7 @@ class App extends Component{
     console.log('board in state: ', this.state.gameboard)
     return (
       <div className="App">
-        <Board squares={this.state.squares}/>
+        <Board numberOfSquares={this.state.numberOfSquares}/>
       </div>
     );
   }

@@ -1,3 +1,8 @@
+#_28 {
+  background-color: #f0f;
+}
+/* one, two, three, four, five, six */
+
 body {
   margin: 0;
   padding: 0;
@@ -7,7 +12,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -30,3 +34,4 @@ code {
    background-image: url("i/bg.png");
    background-repeat: no-repeat;
  }
+

@@ -1,3 +1,4 @@
+// this is a class component, as opposed to a functional component
 import React from 'react';
 import Square from './square.jsx';
 
@@ -9,7 +10,14 @@ class Board extends React.Component {
   }
 
   makeBoard() {
-    return new Array(this.props.squares).fill(<Square /* pass id */ />);
+    var numberOfSquares = [];
+    for (var i = 1; i <= this.props.numberOfSquares; i++) {
+      numberOfSquares.push(i);
+   }
+
+    return numberOfSquares.map((item, key) =>
+         <div><Square id={item} key={key}/></div>
+    );
   }
 
   render() {
