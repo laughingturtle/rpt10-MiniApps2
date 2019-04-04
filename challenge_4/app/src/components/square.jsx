@@ -37,16 +37,21 @@ class Square extends React.Component {
       // check left
       if(board[a]!== undefined && board[a][b -1] !== undefined){
         if(board[a][b] !== 8 && board[a][b -1] !== 8){
+          //|| board[a][b-1] > 0 && board[a][b-2] < 1
+          if(board[a][b] > 1 && board[a][b-1] < 1 ){
+            return;
+          } else {
+
          // console.log('thus target this: ', '_' + a + '' + (b -1));
-           document.getElementById('_' + a + '' + (b -1)).click();
-          if(board[a][b] < 1 && board[a][b -1] < 1){
+          // document.getElementById('_' + a + '' + (b -1)).click();
+
             console.log('** we\'re in the recursion **');
             console.log('current board value: ', board[a][b]);
             console.log('board value one to the left : ', board[a][b -1]);
             console.log('a:', a, 'b:', b)
-           // this.findConnectedSquares(a,b -1);
+            this.findConnectedSquares(a,b -1);
             console.log('** we\'re out of the recursion **');
-          }
+
         }
       }
       // check top left
@@ -99,7 +104,7 @@ class Square extends React.Component {
       //   }
       // }
     }
-
+  }
 
   display() {
    // console.log('gameboard: ', this.props.gameboard)
