@@ -11,10 +11,15 @@ class App extends Component{
       numberOfSquares: 99,
       mines: 7
     }
-    this.revealClicked = this.revealClicked.bind(this)
+    this.init = this.init.bind(this);
+    this.revealClicked = this.revealClicked.bind(this);
   }
 
   componentDidMount() {
+    this.init();
+  }
+
+  init(){
     this.setState({
       gameboard: makeGameBoard()
     })

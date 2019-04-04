@@ -23,7 +23,7 @@ class Board extends React.Component {
      console.log('scores in board component: ', scores)
 
     return _.zipWith(numberOfSquares, scores, ((item, score) =>
-      <Square id={item} score={score} revealClicked={this.props.revealClicked}/>
+      <Square id={item} score={score} revealClicked={this.props.revealClicked} gameboard={this.props.gameboard}/>
     ))
   }
 

@@ -19,7 +19,7 @@ function makeGameBoard() {
 
   function generateMinesPlacementArray() {
     /* generate 10 unique numbers between 1 and 100 */
-    while(mines.length < 8){
+    while(mines.length < 9){
         let b = Math.floor(Math.random()*100) + 1;
         if(mines.indexOf(b) === -1) mines.push(b);
     }
