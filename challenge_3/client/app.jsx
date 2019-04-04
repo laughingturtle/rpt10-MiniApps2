@@ -171,14 +171,14 @@ render(){
   }
     return (
       <div className="innercontainer">
-        <div className="col">
+        <div className="col noselect">
           <h1 className="noselect">Bowl Me Over!</h1>
           <Keypad checkGameStatus={this.checkGameStatus}/>
           <ScoreBoard frame={this.state.frame} roll={this.state.roll} score={this.state.score} gameInProgress={this.gameInProgress}/>
           {display}
         </div>
         <div className="col">
-          <div className="scoreslist">
+          <div className="scoreslist ">
             <ScoresList data={this.state.data}/>
           </div>
         </div>

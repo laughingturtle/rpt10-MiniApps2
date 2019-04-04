@@ -32,4 +32,6 @@ db.counters.insert({
   "game_id":"gameid",
   "sequence_value": 0
 })
+
+how to export 2 modules and access them?
 */

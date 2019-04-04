@@ -324,7 +324,7 @@ function (_React$Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "innercontainer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col"
+        className: "col noselect"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "noselect"
       }, "Bowl Me Over!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_keypad_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -337,7 +337,7 @@ function (_React$Component) {
       }), display), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "scoreslist"
+        className: "scoreslist "
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_scoresList_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
         data: this.state.data
       }))));
