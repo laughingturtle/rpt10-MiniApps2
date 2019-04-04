@@ -13,13 +13,16 @@ class Square extends React.Component {
   this.display = this.display.bind(this);
   this.endGame = this.endGame.bind(this);
   this.clickHandler = this.clickHandler.bind(this);
-  this.findConnnectedSquares = this.findConnnectedSquares.bind(this);
+  this.findConnectedSquares = this.findConnectedSquares.bind(this);
  }
 
   clickHandler(e) {
     this.setState({isClicked : !this.state.isClicked});
+    let id = e.target.id.substr(1);
+    let a = parseInt(id.charAt(0));
+    let b = parseInt(id.charAt(1));
 
-    this.findConnnectedSquares(e.target.id);
+    this.findConnectedSquares(a, b);
     //this.props.revealClicked(e.target.id);
     if (this.props.score === 8){
       /* end game */ // boom
@@ -27,19 +30,10 @@ class Square extends React.Component {
     }
   }
 
-  findConnnectedSquares(hit) {
-    console.log('actual id: ', hit )
-    let id = hit.substr(1);
-   // console.log('id: ', id);
-    let a = parseInt(id.charAt(0));
-    let b = parseInt(id.charAt(1));
-    // console.log('a: ', a);
-    // console.log('b: ', b);
-    let board = this.props.gameboard;
-
-    function checkEightSquaresAround(a,b){
-     console.log('a: ', a);
-     console.log('b: ', b);
+  findConnectedSquares(a,b){
+      let board = this.props.gameboard;
+      console.log('a: ', a);
+      console.log('b: ', b);
       // check left
       if(board[a]!== undefined && board[a][b -1] !== undefined){
         if(board[a][b] !== 8 && board[a][b -1] !== 8){
@@ -50,7 +44,7 @@ class Square extends React.Component {
             console.log('current board value: ', board[a][b]);
             console.log('board value one to the left : ', board[a][b -1]);
             console.log('a:', a, 'b:', b)
-          //  checkEightSquaresAround(a,b -1);
+           // this.findConnectedSquares(a,b -1);
             console.log('** we\'re out of the recursion **');
           }
         }
@@ -105,8 +99,7 @@ class Square extends React.Component {
       //   }
       // }
     }
-    checkEightSquaresAround(a,b);
-  }
+
 
   display() {
    // console.log('gameboard: ', this.props.gameboard)
