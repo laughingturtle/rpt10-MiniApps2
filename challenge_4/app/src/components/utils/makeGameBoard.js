@@ -19,7 +19,7 @@ function makeGameBoard() {
 
   function generateMinesPlacementArray() {
     /* generate 10 unique numbers between 1 and 100 */
-    while(mines.length < 7){
+    while(mines.length < 8){
         let b = Math.floor(Math.random()*100) + 1;
         if(mines.indexOf(b) === -1) mines.push(b);
     }
@@ -58,6 +58,7 @@ function makeGameBoard() {
   }
   function addNumberHintsToBoard(){
       /*
+      8 = a mine
       if board position === 8
       left, above left, above, above right, right,
       below right, below, below left = their current value +1

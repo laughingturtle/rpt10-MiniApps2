@@ -1,7 +1,7 @@
-#_28 {
-  background-color: #f0f;
-}
 /* one, two, three, four, five, six */
+/* #x99 {
+  opacity: 1;
+} */
 
 body {
   margin: 0;
@@ -20,18 +20,122 @@ code {
  width: 50px;
  height: 50px;
  float: left;
+ cursor: pointer;
+ font-family: 'Baloo Chettan', cursive;
+ font-size: 35px;
+ /* opacity:0; */
 }
-.board {
-  width: 500px;
-  height: 500px;
-  cursor: pointer;
+.innersquare {
+  font-family: 'Baloo Chettan', cursive;
+  font-size: 35px;
+  padding-top:0;
+  width: 50px;
+  height: 50px;
+  user-select: none;
 }
 .square:hover {
   background-color: #fff;
   opacity: 0.16;
  }
  .board {
-   background-image: url("i/bg.png");
-   background-repeat: no-repeat;
+  width: 500px;
+  height: 500px;
+  background-image: url("i/bg.png");
+  background-repeat: no-repeat;
+  cursor: pointer;
  }
 
+ .show {
+   opacity: 1;
+ }
+ .hide {
+  opacity: 0;
+ }
+ .bomb {
+  /* background-image: url("i/mine.png"); */
+    background-image: url("i/bomb.png") !important;
+ }
+ .red {
+   color: #c10a0a;
+ }
+ .green {
+   color: #1dc275;
+ }
+ .blue {
+  color: #3bd7f2;
+}
+
+  /* .square:nth-child(8) .innersquare {
+  background-color: #f0f;
+} */
+
+ /* set up checkerboard */
+ .square:nth-child(n):nth-child(odd):nth-child(-n+10) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n):nth-child(even):nth-child(-n+10) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+11):nth-child(even):nth-child(-n+20) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+11):nth-child(odd):nth-child(-n+20) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+21):nth-child(odd):nth-child(-n+30) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+21):nth-child(even):nth-child(-n+30) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+31):nth-child(even):nth-child(-n+40) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+31):nth-child(odd):nth-child(-n+40) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+41):nth-child(odd):nth-child(-n+50) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+41):nth-child(even):nth-child(-n+50) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+51):nth-child(even):nth-child(-n+60) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+51):nth-child(odd):nth-child(-n+60) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+61):nth-child(odd):nth-child(-n+70) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+61):nth-child(even):nth-child(-n+70) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+71):nth-child(even):nth-child(-n+80) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+71):nth-child(odd):nth-child(-n+80) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+81):nth-child(odd):nth-child(-n+90) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+81):nth-child(even):nth-child(-n+90) .innersquare {
+  background-color: #ccae90;
+}
+
+.square:nth-child(n+91):nth-child(even):nth-child(-n+100) .innersquare {
+  background-color: #e8c6a4;
+}
+.square:nth-child(n+91):nth-child(odd):nth-child(-n+100) .innersquare {
+  background-color: #ccae90;
+}
