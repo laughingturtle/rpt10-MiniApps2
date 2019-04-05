@@ -14,15 +14,14 @@ class Square extends React.Component {
   this.endGame = this.endGame.bind(this);
   this.clickHandler = this.clickHandler.bind(this);
   this.findConnectedSquares = this.findConnectedSquares.bind(this);
+  // this.checkEightSquaresAround = this.checkEightSquaresAround.bind(this);
+  this.isInArray = this.isInArray.bind(this);
  }
 
   clickHandler(e) {
     this.setState({isClicked : !this.state.isClicked});
-    let id = e.target.id.substr(1);
-    let a = parseInt(id.charAt(0));
-    let b = parseInt(id.charAt(1));
-
-    this.findConnectedSquares(a, b);
+    console.log('board', this.props.gameboard);
+    this.findConnectedSquares(e);
     //this.props.revealClicked(e.target.id);
     if (this.props.score === 8){
       /* end game */ // boom
@@ -30,79 +29,135 @@ class Square extends React.Component {
     }
   }
 
-  findConnectedSquares(a,b){
-      let board = this.props.gameboard;
-      console.log('a: ', a);
-      console.log('b: ', b);
+  isInArray(value, array){
+    return array.indexOf(value) > -1;
+  }
+
+  findConnectedSquares(e){
+    let thus = this;
+    let board = this.props.gameboard;
+    let id = e.target.id.substr(1);
+    let num1 = parseInt(id.charAt(0));
+    let num2 = parseInt(id.charAt(1));
+    let connectedSquares = [];
+
+    // check value of the square at a or b
+    // if it's a bomb do not run this function, if it has a number value no not run it.
+    // next  the below in those checks
+
+    /* refactor this to be proper recursion,
+    take out the clicks,
+    add to array if not already there,
+    when done loop through the array and add clicks to those, possibly with a time delay if needed?
+    */
+
+    /*
+    you know the size of the board and the value of a and b, you can check on the number value
+
+    helper function to get the value at the square, is it a bomb or a number or empty?
+    pass the board coordinates into this helper function
+
+    make them objects, the coordinates, + can you see it?, have that as a value.
+    it's rechecking visible squares - have a helper function that checks if it's been looked at.
+
+
+
+    */
+    function checkEightSquaresAround(a,b){
       // check left
       if(board[a]!== undefined && board[a][b -1] !== undefined){
         if(board[a][b] !== 8 && board[a][b -1] !== 8){
-          //|| board[a][b-1] > 0 && board[a][b-2] < 1
-          if(board[a][b] > 1 && board[a][b-1] < 1 ){
-            return;
-          } else {
-
-         // console.log('thus target this: ', '_' + a + '' + (b -1));
-          // document.getElementById('_' + a + '' + (b -1)).click();
-
-            console.log('** we\'re in the recursion **');
-            console.log('current board value: ', board[a][b]);
-            console.log('board value one to the left : ', board[a][b -1]);
-            console.log('a:', a, 'b:', b)
-            this.findConnectedSquares(a,b -1);
-            console.log('** we\'re out of the recursion **');
-
+          if (board[a][b] === 0){
+            //is it already visible?
+            let str = '_' + a + '' + (b -1);
+            if(thus.isInArray(str, connectedSquares) === false){
+              connectedSquares.push(str);
+            }
+            checkEightSquaresAround(a,b-1);
+          }
         }
       }
       // check top left
-      // if(board[a -1]!== undefined && board[a -1][b -1] !== undefined){
-      //   if(board[a][b] !== 8 && board[a-1][b -1] !== 8){
-      //     console.log('thus target this: ', '_' + (a -1) + '' + (b -1));
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
-      //   }
-      // }
-      // // check top
+      if(board[a -1]!== undefined && board[a -1][b -1] !== undefined){
+        if(board[a][b] !== 8 && board[a-1][b -1] !== 8){
+          if (board[a][b] === 0){
+            let str = '_' + (a-1) + '' + (b -1);
+            if(thus.isInArray(str, connectedSquares) === false){
+              connectedSquares.push(str);
+            }
+            checkEightSquaresAround(a-1,b-1);
+          }
+        }
+      }
+      // // // check top
       // if(board[a -1]!== undefined && board[a -1][b] !== undefined){
       //   if(board[a][b] !== 8 && board[a-1][b] !== 8){
-      //     console.log('thus target this: ', '_' + (a -1) + '' + (b));
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
+      //     if (board[a][b] === 0){
+      //       let str = '_' + (a-1) + '' + (b);
+      //       if(thus.isInArray(str, connectedSquares) === false){
+      //         connectedSquares.push(str);
+      //       }
+      //      // checkEightSquaresAround(a-1,b);
+      //     }
       //   }
       // }
       // // check top right
       // if(board[a -1]!== undefined && board[a -1][b +1] !== undefined){
       //   if(board[a][b] !== 8 && board[a-1][b +1] !== 8){
-      //     console.log('thus target this: ', '_' + (a -1) + '' + (b +1));
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
+      //     if (board[a][b] === 0){
+      //       let str = '_' + (a-1) + '' + (b+1);
+      //       if(thus.isInArray(str, connectedSquares) === false){
+      //         connectedSquares.push(str);
+      //       }
+      //       checkEightSquaresAround(a-1,b+1);
+      //     }
       //   }
       // }
       // // check right
       // if(board[a]!== undefined && board[a][b +1] !== undefined){
       //   if(board[a][b] !== 8 && board[a][b +1] !== 8){
-      //     console.log('thus target this: ', '_' + a + '' + (b +1));
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
+      //     if (board[a][b] === 0){
+      //       let str = '_' + (a) + '' + (b+1);
+      //       if(thus.isInArray(str, connectedSquares) === false){
+      //         connectedSquares.push(str);
+      //       }
+      //       checkEightSquaresAround(a, b+1);
+      //     }
       //   }
       // }
       // // check bottom right
       // if(board[a +1]!== undefined && board[a +1][b +1] !== undefined){
       //   if(board[a][b] !== 8 && board[a+1][b +1] !== 8){
-      //     console.log('thus target this: ', '_' + (a +1) + '' + (b +1));
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
+      //     if (board[a][b] === 0){
+      //       document.getElementById('_' + (a+1) + '' + (b+1)).click();
+      //       //console.log('thus target this: ', '_' + (a +1) + '' + (b+1));
+      //     }
       //   }
       // }
-      // // check bottom
+      // // // check bottom
       // if(board[a +1]!== undefined && board[a +1][b] !== undefined){
       //   if(board[a][b] !== 8 && board[a+1][b] !== 8){
-      //     console.log('thus target this: ', '_' + (a +1) + '' + b);
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
+      //     if (board[a][b] === 0){
+      //       document.getElementById('_' + (a+1) + '' + (b)).click();
+      //       //console.log('thus target this: ', '_' + (a +1) + '' + (b));
+      //     }
       //   }
       // }
-      // // check bottom left
+      // // // check bottom left
       // if(board[a +1]!== undefined && board[a +1][b -1] !== undefined){
       //   if(board[a][b] !== 8 && board[a+1][b -1] !== 8){
-      //     console.log('thus target this: ', '_' + (a +1) + '' + (b -1));
-      //     // /* what here?*/ ('_00').click(); // target the click event of this id
+      //     if (board[a][b] === 0){
+      //       document.getElementById('_' + (a+1) + '' + (b-1)).click();
+      //       //console.log('thus target this: ', '_' + (a +1) + '' + (b-1));
+      //     }
       //   }
       // }
+    }
+    checkEightSquaresAround(num1,num2);
+
+    console.log('connectedSquares', connectedSquares);
+    for(let i = 0; i < connectedSquares.length; i++){
+      document.getElementById(connectedSquares[i]).click();
     }
   }
 
@@ -118,11 +173,13 @@ class Square extends React.Component {
     }
   }
 
+  // this is on one sqaure not the board, how will the other suquares know?
   endGame(){
     this.setState({
       gameOver: true
     }, () => console.log('gameOver: ', this.state.gameOver))
   }
+
 
   render() {
     var switchClass;

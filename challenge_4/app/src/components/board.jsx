@@ -20,10 +20,10 @@ class Board extends React.Component {
     }
 
      let scores = _.flatten(this.props.gameboard);
-     console.log('scores in board component: ', scores)
+    // console.log('scores in board component: ', scores)
 
-    return _.zipWith(numberOfSquares, scores, ((item, score) =>
-      <Square id={item} score={score} revealClicked={this.props.revealClicked} gameboard={this.props.gameboard}/>
+    return _.zipWith(numberOfSquares, scores, ((num, score) =>
+      <Square id={num} score={score} revealClicked={this.props.revealClicked} gameboard={this.props.gameboard}/>
     ))
   }
 

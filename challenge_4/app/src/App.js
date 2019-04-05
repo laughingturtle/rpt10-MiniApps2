@@ -22,7 +22,7 @@ class App extends Component{
   init(){
     this.setState({
       gameboard: makeGameBoard()
-    })
+    }, () => console.log('gameboard', this.state.gameboard))
   }
 
   revealClicked(e){
@@ -71,7 +71,7 @@ class App extends Component{
   }
 
   render() {
-    console.log('board in state: ', this.state.gameboard)
+    //console.log('board in state: ', this.state.gameboard)
     return (
       <div className="App">
         <Board numberOfSquares={this.state.numberOfSquares} revealClicked={this.revealClicked} gameboard={this.state.gameboard}/>
