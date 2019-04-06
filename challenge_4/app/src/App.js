@@ -16,20 +16,11 @@ class App extends Component{
     }
     this.init = this.init.bind(this);
     this.isSquareVisible = this.isSquareVisible.bind(this);
+    this.endGame = this.endGame.bind(this);
   }
 
   componentDidMount() {
     this.init();
-  }
-
-  isSquareVisible(sq){
-    let board = this.state.gameboard;
-    // update viz of coords sq
-    console.log('newboard', board);
-
-    this.setState({
-      gameboard: board
-    })
   }
 
   init(){
@@ -42,10 +33,28 @@ class App extends Component{
     })
   }
 
+  isSquareVisible(coords){
+    let board = this.state.gameboard;
+    console.log('coords', coords)
+    let num1 = parseInt(coords.charAt(0));
+    let num2 = parseInt(coords.charAt(1));
+    board[num1][num2].viz = true
+    //console.log
+
+    this.setState({
+      gameboard: board
+    })
+  }
+
+  endGame(){
+    this.setState({
+      gameOver: false
+    })
+  }
   render() {
     return (
       <div className="App">
-        <Board squares={this.state.squares} gameOver={this.state.gameOver} init={this.state.init} gameboard={this.state.gameboard} isSquareVisible={this.isSquareVisible}/>
+        <Board squares={this.state.squares} gameOver={this.state.gameOver} gameboard={this.state.gameboard} init={this.state.init} isSquareVisible={this.isSquareVisible} endGame={this.endGame}/>
       </div>
     );
   }

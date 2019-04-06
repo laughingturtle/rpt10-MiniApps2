@@ -11,6 +11,7 @@ class Board extends React.Component {
   }
 
   makeBoard() {
+    // console.log('props:', this.props)
     var squares = [];
     for (var i = 0; i <= this.props.squares; i++) {
       if (i < 10){
@@ -18,15 +19,16 @@ class Board extends React.Component {
       }
       squares.push(i);
     }
-    //console.log('squares:', squares);
+    // console.log('squares:', squares);
+    // console.log('init:', this.props.init);
 
     if (this.props.init){
       var arr = viewMatrixValues(this.props.gameboard);
       let vals = _.flatten(arr);
-     // console.log('vals:', vals)
+
 
       return _.zipWith(squares, vals, ((num, val) =>
-        <Square id={num} val={val} gameOver={this.props.gameOver} gameboard={this.props.gameboard} isSquareVisible={this.props.isSquareVisible}/>
+        <Square id={num} val={val} gameOver={this.props.gameOver} gameboard={this.props.gameboard} isSquareVisible={this.props.isSquareVisible} endGame={this.props.endGame} />
       ))
     }
   }

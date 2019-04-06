@@ -19,17 +19,20 @@ class Square extends React.Component {
 
   clickHandler(e) {
     this.setState({isClicked : !this.state.isClicked});
-    //console.log('board', this.props.gameboard);
-    this.findConnectedSquares(e.target.id);
+    var coords = e.target.id.substr(1);
+    //console.log('coords in click handler: ', coords);
+    this.updateVis(coords);
     if (this.props.val === 8){
       /* end game */ // boom
-      this.endGame()
+
     }
+   this.findConnectedSquares(coords);
   }
 
-  updateVis(sq){
-    console.log('sq', sq);
-    this.props.isSquareVisible(sq);
+  updateVis(coords){
+    /* update state on top level */
+    //console.log('coords in update vis: ', coords);
+    this.props.isSquareVisible(coords);
   }
 
   isInArray(value, array){
@@ -40,9 +43,8 @@ class Square extends React.Component {
     // console.log('e', e);
     let thus = this;
     let board = this.props.gameboard;
-    let id = e.substr(1);
-    let num1 = parseInt(id.charAt(0));
-    let num2 = parseInt(id.charAt(1));
+    let num1 = parseInt(e.charAt(0));
+    let num2 = parseInt(e.charAt(1));
     let connectedSquares = [];
     // console.log('num1: ',num1);
     // console.log('num2: ',num2);
@@ -80,15 +82,16 @@ class Square extends React.Component {
         if(board[a][b].val === 0){
 
           // check left
-          if(board[a]!== undefined && board[a][b -1] !== undefined){
+          if (a >= 0 && b-1 >= 0){
             if(board[a][b -1].val !== 8){
               if(board[a][b -1].viz === false){
-                let str = '_' + a + '' + (b -1);
-                if(thus.isInArray(str, connectedSquares) === false){
-                  connectedSquares.push(str);
-                  thus.updateVis(a +'' + (b -1));
+                let coords = a + '' + (b -1);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id);
+                  thus.updateVis(coords);
+                  checkEightSquaresAround(a,b-1);
                 }
-                checkEightSquaresAround(a,b-1);
               }
             }
           }
@@ -176,6 +179,7 @@ class Square extends React.Component {
     for(let i = 0; i < connectedSquares.length; i++){
       document.getElementById(connectedSquares[i]).click();
     }
+    connectedSquares = [];
   }
 
   display() {
