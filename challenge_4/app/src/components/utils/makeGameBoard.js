@@ -1,4 +1,4 @@
-function makeGameBoard() {
+function makeGameBoard(n) {
   let board = [];
   let mines = [];
 
@@ -16,7 +16,7 @@ function makeGameBoard() {
 
   function generateMinesPlacementArray() {
     /* generate n unique numbers between 0 and 99 */
-    var n = 9;
+    //var n = 10;
     while(mines.length < n){
         var b = Math.floor(Math.random()*99) + 0;
         if(mines.indexOf(b) === -1) {

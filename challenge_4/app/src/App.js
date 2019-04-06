@@ -10,7 +10,7 @@ class App extends Component{
     this.state = {
       gameboard:[],
       squares: 99,
-      mines: 7,
+      mines: 10,
       gameOver: false,
       init: false
     }
@@ -25,11 +25,11 @@ class App extends Component{
 
   init(){
     this.setState({
-      gameboard: makeGameBoard(),
+      gameboard: makeGameBoard(this.state.mines),
       init: true
     }, () => {
       console.log('gameboard', this.state.gameboard);
-      console.log(viewMatrixValues(this.state.gameboard));
+      console.log('matrix', viewMatrixValues(this.state.gameboard));
     })
   }
 

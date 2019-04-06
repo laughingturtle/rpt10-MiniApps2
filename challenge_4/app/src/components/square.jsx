@@ -96,80 +96,103 @@ class Square extends React.Component {
             }
           }
           // check top left
-          // if(board[a -1]!== undefined && board[a -1][b -1] !== undefined){
-          //   if(board[a-1][b -1] !== 8){
-
-          //       let str = '_' + (a-1) + '' + (b -1);
-          //       if(thus.isInArray(str, connectedSquares) === false){
-          //         connectedSquares.push(str);
-
-          //       checkEightSquaresAround(a-1,b-1);
-          //     }
-          //   }
-          // }
+          if (a-1 >= 0 && a-1 <= 9 && b-1 >= 0 && b+1 <= 9){
+            if(board[a-1][b -1].val !== 8){
+              if(board[a-1][b -1].viz === false){
+                let coords = (a-1) + '' + (b -1);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a-1,b-1);
+                }
+              }
+            }
+          }
           // // // check top
-          // if(board[a -1]!== undefined && board[a -1][b] !== undefined){
-          //   if(board[a][b] !== 8 && board[a-1][b] !== 8){
-          //     if (board[a][b] === 0){
-          //       let str = '_' + (a-1) + '' + (b);
-          //       if(thus.isInArray(str, connectedSquares) === false){
-          //         connectedSquares.push(str);
-          //       }
-          //      // checkEightSquaresAround(a-1,b);
-          //     }
-          //   }
-          // }
+          if (a-1 >= 0 && a-1 <= 9 && b >= 0){
+            if(board[a-1][b].val !== 8){
+              if(board[a-1][b].viz === false){
+                let coords = (a-1) + '' + (b);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a-1,b);
+                }
+              }
+            }
+          }
           // // check top right
-          // if(board[a -1]!== undefined && board[a -1][b +1] !== undefined){
-          //   if(board[a][b] !== 8 && board[a-1][b +1] !== 8){
-          //     if (board[a][b] === 0){
-          //       let str = '_' + (a-1) + '' + (b+1);
-          //       if(thus.isInArray(str, connectedSquares) === false){
-          //         connectedSquares.push(str);
-          //       }
-          //       checkEightSquaresAround(a-1,b+1);
-          //     }
-          //   }
-          // }
+          if (a-1 >= 0 && a-1 <= 9 && b+1 >= 0 && b+1 <= 9){
+            if(board[a-1][b+1].val !== 8){
+              if(board[a-1][b+1].viz === false){
+                let coords = (a-1) + '' + (b+1);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a-1,b+1);
+                }
+              }
+            }
+          }
           // // check right
-          // if(board[a]!== undefined && board[a][b +1] !== undefined){
-          //   if(board[a][b] !== 8 && board[a][b +1] !== 8){
-          //     if (board[a][b] === 0){
-          //       let str = '_' + (a) + '' + (b+1);
-          //       if(thus.isInArray(str, connectedSquares) === false){
-          //         connectedSquares.push(str);
-          //       }
-          //       checkEightSquaresAround(a, b+1);
-          //     }
-          //   }
-          // }
+          if (a <= 9 && b+1 >= 0 && b+1 <= 9){
+            if(board[a][b+1].val !== 8){
+              if(board[a][b+1].viz === false){
+                let coords = (a) + '' + (b+1);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a,b+1);
+                }
+              }
+            }
+          }
           // // check bottom right
-          // if(board[a +1]!== undefined && board[a +1][b +1] !== undefined){
-          //   if(board[a][b] !== 8 && board[a+1][b +1] !== 8){
-          //     if (board[a][b] === 0){
-          //       document.getElementById('_' + (a+1) + '' + (b+1)).click();
-          //       //console.log('thus target this: ', '_' + (a +1) + '' + (b+1));
-          //     }
-          //   }
-          // }
-          // // // check bottom
-          // if(board[a +1]!== undefined && board[a +1][b] !== undefined){
-          //   if(board[a][b] !== 8 && board[a+1][b] !== 8){
-          //     if (board[a][b] === 0){
-          //       document.getElementById('_' + (a+1) + '' + (b)).click();
-          //       //console.log('thus target this: ', '_' + (a +1) + '' + (b));
-          //     }
-          //   }
-          // }
-          // // // check bottom left
-          // if(board[a +1]!== undefined && board[a +1][b -1] !== undefined){
-          //   if(board[a][b] !== 8 && board[a+1][b -1] !== 8){
-          //     if (board[a][b] === 0){
-          //       document.getElementById('_' + (a+1) + '' + (b-1)).click();
-          //       //console.log('thus target this: ', '_' + (a +1) + '' + (b-1));
-          //     }
-          //   }
-          // }
+          if (a+1 >= 0 && a+1 <= 9 && b+1 >= 0&& b+1 <= 9){
+            if(board[a+1][b+1].val !== 8){
+              if(board[a+1][b+1].viz === false){
+                let coords = (a+1) + '' + (b+1);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a+1,b+1);
+                }
+              }
+            }
+          }
+          // check bottom
+          if (a+1 >= 0 && a+1 <= 9 && b >= 0&& b <= 9){
+            if(board[a+1][b].val !== 8){
+              if(board[a+1][b].viz === false){
+                let coords = (a+1) + '' + (b);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a+1,b);
+                }
+              }
+            }
+          }
+          // check bottom left
+          if (a+1 >= 0 && a+1 <= 9 && b-1 >= 0&& b-1 <= 9){
+            if(board[a+1][b-1].val !== 8){
+              if(board[a+1][b-1].viz === false){
+                let coords = (a+1) + '' + (b-1);
+                let id = '_' + coords;
+                if(thus.isInArray(id, connectedSquares) === false){
+                  connectedSquares.push(id); // into array for clicks to be added
+                  thus.updateVis(coords); // updateisvisible
+                  checkEightSquaresAround(a+1,b-1);
+                }
+              }
+            }
+          }
         }
       }
     }
